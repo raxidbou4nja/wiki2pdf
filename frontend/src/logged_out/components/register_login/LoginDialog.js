@@ -8,6 +8,8 @@ import FormDialog from "../../../shared/components/FormDialog";
 import HighlightedInformation from "../../../shared/components/HighlightedInformation";
 import ButtonCircularProgress from "../../../shared/components/ButtonCircularProgress";
 import VisibilityPasswordTextField from "../../../shared/components/VisibilityPasswordTextField";
+import { loginAction } from "../../../redux/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const styles = (theme) => ({
   forgotPassword: {
@@ -31,37 +33,50 @@ const styles = (theme) => ({
 });
 
 function LoginDialog(props) {
+  const dispatch = useDispatch();
+
   const {
     setStatus,
     history,
     classes,
     onClose,
-    openChangePasswordDialog,
     status,
+    openChangePasswordDialog,
   } = props;
+
+
+
   const [isLoading, setIsLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const loginEmail = useRef();
   const loginPassword = useRef();
 
-  const login = useCallback(() => {
+  const login = useCallback( async () => {
     setIsLoading(true);
     setStatus(null);
-    if (loginEmail.current.value !== "test@web.com") {
-      setTimeout(() => {
-        setStatus("invalidEmail");
-        setIsLoading(false);
-      }, 1500);
-    } else if (loginPassword.current.value !== "HaRzwc") {
-      setTimeout(() => {
-        setStatus("invalidPassword");
-        setIsLoading(false);
-      }, 1500);
-    } else {
-      setTimeout(() => {
+    
+    const email = loginEmail.current.value;
+    const password = loginPassword.current.value;
+
+    try {
+      const result = await dispatch(loginAction({ email, password })).unwrap();
+
+      if (result.message) {
+          setStatus(result.message);
+          setIsLoading(false);
+      }
+      else
+      {
         history.push("/c/dashboard");
-      }, 150);
+      }
+
+    } catch (error) {
+        console.log(error)
+    } finally {
+        setIsLoading(false);
     }
+
+
   }, [setIsLoading, loginEmail, loginPassword, history, setStatus]);
 
   return (

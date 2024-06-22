@@ -6,6 +6,8 @@ import FormDialog from "../../../shared/components/FormDialog";
 import HighlightedInformation from "../../../shared/components/HighlightedInformation";
 import ButtonCircularProgress from "../../../shared/components/ButtonCircularProgress";
 import VisibilityPasswordTextField from "../../../shared/components/VisibilityPasswordTextField";
+import { registerAction } from "../../../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const styles = (theme) => ({
   link: {
@@ -25,15 +27,18 @@ const styles = (theme) => ({
 });
 
 function RegisterDialog(props) {
+  const dispatch = useDispatch();
+
   const { setStatus, theme, onClose, openTermsDialog, status, classes } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [hasTermsOfServiceError, setHasTermsOfServiceError] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const registerEmail = useRef();
   const registerTermsCheckbox = useRef();
   const registerPassword = useRef();
   const registerPasswordRepeat = useRef();
 
-  const register = useCallback(() => {
+  const register = useCallback( async () => {
     if (!registerTermsCheckbox.current.checked) {
       setHasTermsOfServiceError(true);
       return;
@@ -44,11 +49,40 @@ function RegisterDialog(props) {
       setStatus("passwordsDontMatch");
       return;
     }
-    setStatus(null);
-    setIsLoading(true);
-    setTimeout(() => {
+
+    try {
+     const response = await dispatch(
+        registerAction({
+          email: registerEmail.current.value,
+          password: registerPassword.current.value,
+        })
+      ).unwrap();
+
+
+      if (response?.errors?.email)
+        {
+          console.log(response.errors.email);
+          setStatus("invalidEmail");
+        }
+      else if (response?.errors?.password)
+        {
+          console.log(response.errors.password);
+          setStatus("passwordTooShort");
+        }
+      else
+        {
+          window.location.href = "/c/dashboard";
+        }
+      
+      
+    }
+    catch (error) {
+      console.error(error);
+    }
+    finally {
       setIsLoading(false);
-    }, 1500);
+    }
+
   }, [
     setIsLoading,
     setStatus,
@@ -82,12 +116,17 @@ function RegisterDialog(props) {
             autoFocus
             autoComplete="off"
             type="email"
+            inputRef={registerEmail}
             onChange={() => {
               if (status === "invalidEmail") {
                 setStatus(null);
               }
             }}
             FormHelperTextProps={{ error: true }}
+            helperText={
+              status === "invalidEmail" &&
+              "This email address is associated with an account Or invalid email."
+            }
           />
           <VisibilityPasswordTextField
             variant="outlined"

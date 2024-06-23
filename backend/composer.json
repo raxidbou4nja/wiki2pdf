@@ -11,7 +11,8 @@
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "mikehaertl/phpwkhtmltopdf": "^2.5"
+        "mikehaertl/phpwkhtmltopdf": "^2.5",
+        "spatie/laravel-permission": "^6.8"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

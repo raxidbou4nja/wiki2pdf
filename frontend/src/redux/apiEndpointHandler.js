@@ -1,18 +1,25 @@
 import axios from 'axios';
 
-const API_URL =  process.env.REACT_APP_API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
-
-console.log('API_URL', API_URL);
 const apiEndpointHandler = (endpoint) => {
+  const token = localStorage.getItem('token');
+
+  const axiosInstance = axios.create({
+    baseURL: API_URL,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
   return {
-    getItems: (params) => axios.get(`${API_URL}/${endpoint}`, { params }),
-    getItemById: (id) => axios.get(`${API_URL}/${endpoint}/${id}`),
-    createItem: (item) => axios.post(`${API_URL}/${endpoint}`, item),
-    updateItem: (item, id) => axios.put(`${API_URL}/${endpoint}/${id}`, item),
-    deleteItem: (itemId) => axios.delete(`${API_URL}/${endpoint}/${itemId}`),
+    getItems: (params) => axiosInstance.get(`/${endpoint}`, { params }),
+    getItemById: (id) => axiosInstance.get(`/${endpoint}/${id}`),
+    createItem: (item) => axiosInstance.post(`/${endpoint}`, item),
+    updateItem: (item, id) => axiosInstance.put(`/${endpoint}/${id}`, item),
+    deleteItem: (itemId) => axiosInstance.delete(`/${endpoint}/${itemId}`),
     deleteSelectedItems: (itemIds) => {
-      const requests = itemIds.map((id) => axios.delete(`${API_URL}/${endpoint}/${id}`));
+      const requests = itemIds.map((id) => axiosInstance.delete(`/${endpoint}/${id}`));
       return axios.all(requests);
     },
   };

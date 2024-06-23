@@ -66,4 +66,13 @@ class AuthController extends Controller
             'token' => $token
         ], 200);
     }
+
+    public function verifyToken(Request $request)
+    {
+        return response([
+            'message' => 'validToken',
+            'token' => $request->user()->currentAccessToken()->plainTextToken,
+            'user' => $request->user()
+        ], 200);
+    }
 }

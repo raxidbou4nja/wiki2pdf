@@ -17,11 +17,16 @@ export const logoutAction = createAsyncThunk('auth/logout', async () => {
     return response.data;
 });
 
+export const verifyToken = createAsyncThunk('auth/verifyToken', async () => {
+    const response = await apiEndpointHandler('auth/verifyToken').createItem();
+    return response.data;
+});
 
 
 const initialState = {
     user: null,
     token: null,
+    isAuthenticated: false,
     };
 
 const authSlice = createSlice({
@@ -32,6 +37,7 @@ const authSlice = createSlice({
         builder.addCase(loginAction.fulfilled, (state, action) => {
             state.user = action.payload.user;
             state.token = action.payload.token;
+            state.isAuthenticated = true;
 
             if (state.user && state.token) {
                 localStorage.setItem('token', state.token);
@@ -41,6 +47,7 @@ const authSlice = createSlice({
         builder.addCase(registerAction.fulfilled, (state, action) => {
             state.user = action.payload.user;
             state.token = action.payload.token;
+            state.isAuthenticated = true;
 
             if (state.user && state.token) {
                 localStorage.setItem('token', state.token);
@@ -50,6 +57,24 @@ const authSlice = createSlice({
         builder.addCase(logoutAction.fulfilled, (state, action) => {
             state.user = null;
             state.token = null;
+            state.isAuthenticated = false;
+        });
+        builder.addCase(verifyToken.fulfilled, (state, action) => {
+            state.user = action.payload.user;
+            state.token = action.payload.token;
+            state.isAuthenticated = true;
+
+            if (state.user && state.token) {
+                localStorage.setItem('token', state.token);
+                localStorage.setItem('user', JSON.stringify(state.user));
+            }
+        });
+        builder.addCase(verifyToken.rejected, (state, action) => {
+            state.user = null;
+            state.token = null;
+            state.isAuthenticated = false;
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
         });
     },
 });

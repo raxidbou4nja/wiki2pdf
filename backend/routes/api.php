@@ -20,6 +20,13 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('auth/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
     Route::post('auth/register', [App\Http\Controllers\Api\AuthController::class, 'register']);
 
+    // auth/verifyToken sanctum group prefix
+    Route::group(['prefix' => 'auth', 'middleware' => 'auth:sanctum'], function () {
+        // Route::get('user', [App\Http\Controllers\Api\AuthController::class, 'user']);
+        // Route::post('logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
+        Route::post('verifyToken', [App\Http\Controllers\Api\AuthController::class, 'verifyToken']);
+    });
+
 
 
 

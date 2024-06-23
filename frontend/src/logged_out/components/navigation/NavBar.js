@@ -33,6 +33,9 @@ const styles = theme => ({
 });
 
 function NavBar(props) {
+
+  const isAuthenticated = localStorage.getItem("token") ? true : false;
+
   const {
     classes,
     openRegisterDialog,
@@ -46,22 +49,26 @@ function NavBar(props) {
     {
       link: "/",
       name: "Home",
-      icon: <HomeIcon className="text-white" />
+      icon: <HomeIcon className="text-white" />,
+      show: true
     },
     {
       link: "/blog",
       name: "Blog",
-      icon: <BookIcon className="text-white" />
+      icon: <BookIcon className="text-white" />,
+      show: true
     },
     {
       name: "Register",
       onClick: openRegisterDialog,
-      icon: <HowToRegIcon className="text-white" />
+      icon: <HowToRegIcon className="text-white" />,
+      show: !isAuthenticated
     },
     {
       name: "Login",
       onClick: openLoginDialog,
-      icon: <LockOpenIcon className="text-white" />
+      icon: <LockOpenIcon className="text-white" />,
+      show: !isAuthenticated
     }
   ];
   return (
@@ -98,6 +105,9 @@ function NavBar(props) {
             </Hidden>
             <Hidden mdDown>
               {menuItems.map(element => {
+                if (element.show === false) {
+                  return null;
+                }
                 if (element.link) {
                   return (
                     <Link

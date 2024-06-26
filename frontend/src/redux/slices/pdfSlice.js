@@ -18,9 +18,9 @@ export const getEditorAction = createAsyncThunk('pdf/getEditor', async (params) 
 export const generatePdfAction = createAsyncThunk('pdf/generatePdf', async () => {
 
     const state = store.getState();
-    const { lang, theme, links, images, code, sections, infobox, pagination, } = state.pdf;
+    const { lang, theme, links, images, code, sections, infobox, pagination, showInfobox , showPagination ,showToc } = state.pdf;
 
-    const response = await apiEndpointHandler('pdf/generate-pdf').createItem({ lang, theme, links, images, code, sections, infobox, pagination});
+    const response = await apiEndpointHandler('pdf/generate-pdf').createItem({ lang, theme, links, images, code, sections, infobox, pagination, showInfobox, showPagination, showToc });
     console.log(response.data);
     return response.data;
 });
@@ -36,8 +36,9 @@ const initialState = {
     code: null,
     pageId: null,
     sections: [],
-    infobox: null,
-    pagination: null,
+    showInfobox: true,
+    showPagination: true,
+    showToc: true,
     toc: {},
     resultPage: {},
     showResultPage: false,
@@ -66,6 +67,17 @@ const pdfSlice = createSlice({
         setTheme: (state, action) => {
             state.theme = action.payload;
         },
+        setShowInfobox: (state, action) => {
+            state.showInfobox = action.payload;
+        },
+        setShowPagination: (state, action) => {
+            state.showPagination = action.payload;
+        }
+        ,
+        setShowToc: (state, action) => {
+            state.showToc = action.payload;
+        }
+        ,
         setClear: (state) => {
             Object.assign(state, initialState);
         }
@@ -107,5 +119,5 @@ const pdfSlice = createSlice({
     },
 });
 
-export const { setSections, setImages, setLinks, setTheme, setClear } = pdfSlice.actions;
+export const { setSections, setImages, setLinks, setTheme, setClear, setShowInfobox, setShowPagination, setShowToc } = pdfSlice.actions;
 export default pdfSlice.reducer;

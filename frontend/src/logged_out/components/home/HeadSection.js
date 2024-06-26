@@ -9,7 +9,7 @@ import MuiAlert from '../../../shared/components/MuiAlert';
 import { ResultPanel } from "./ResultPanel";
 import { ConverterForm } from "./ConverterForm";
 import { PanelEditor } from "./PanelEditor";
-
+import { DownloadPreview } from "./DonwloadPreview";
 
 const styles = (theme) => ({
   extraLargeButtonLabel: {
@@ -102,6 +102,7 @@ function HeadSection(props) {
   // const isWidthUpLg = useMediaQuery(theme.breakpoints.up("lg"));
   const showResultPage = useSelector((state) => state.pdf.showResultPage);
   const showEditorPanel = useSelector((state) => state.pdf.showEditorPanel);
+  const showDownloadPanel = useSelector((state) => state.pdf.showDownloadPanel);
   const error = useSelector((state) => state.pdf.error);
 
   return (
@@ -141,6 +142,7 @@ function HeadSection(props) {
               <div>
                 { showResultPage && <ResultPanel />}
                 { showEditorPanel && <PanelEditor />}
+                { showDownloadPanel && <DownloadPreview />}
                 { error && <MuiAlert severity="error" message={error} /> }
               </div>
             

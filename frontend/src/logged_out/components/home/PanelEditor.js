@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RadioGroup, FormControlLabel, Radio, Checkbox, ToggleButton, ToggleButtonGroup, Button } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
 import TocModal from './TocModal';
-import { setImages, setLinks, setTheme, generatePdfAction, setClear } from '../../../redux/slices/pdfSlice';
+import {
+    setImages, setLinks, setTheme, generatePdfAction, setClear, setShowInfobox,
+    setShowPagination, setShowToc
+} from '../../../redux/slices/pdfSlice';
 
 export function PanelEditor() {
     const dispatch = useDispatch();
@@ -14,6 +17,9 @@ export function PanelEditor() {
     const [selectedTheme, setSelectedTheme] = useState(themes[0].id);
     const [pdfImages, setPdfImages] = React.useState('withImages');
     const [pdfLinks, setPdfLinks] = React.useState('withLinks');
+    const [pdfToc, setPdfToc] = React.useState('withToc');
+    const [pdfPagination, setPdfPagination] = React.useState('withPagination');
+    const [pdfInfobox, setPdfInfobox] = React.useState('withInfobox');
 
     const handleThemeChange = (event) => {
         setSelectedTheme(event.target.value);
@@ -31,6 +37,28 @@ export function PanelEditor() {
         if (newOption !== null) {
             setPdfLinks(newOption);
             dispatch(setLinks(newOption === 'withLinks' ? true : false));
+        }
+    }
+
+
+    const handleChangeToc = (event, newOption) => {
+        if (newOption !== null) {
+            setPdfToc(newOption);
+            dispatch(setShowToc(newOption === 'withToc' ? true : false));
+        }
+    }
+
+    const handleChangePagination = (event, newOption) => {
+        if (newOption !== null) {
+            setPdfPagination(newOption);
+            dispatch(setShowPagination(newOption === 'withPagination' ? true : false));
+        }
+    }
+
+    const handleChangeInfobox = (event, newOption) => {
+        if (newOption !== null) {
+            setPdfInfobox(newOption);
+            dispatch(setShowInfobox(newOption === 'withInfobox' ? true : false));
         }
     }
 
@@ -69,28 +97,75 @@ export function PanelEditor() {
             </RadioGroup>
             <div className='col-md-4'>
                 <div>
-                <ToggleButtonGroup
-                    color="primary"
-                    value={pdfImages}
-                    exclusive
-                    onChange={handleChangeImages}
-                    aria-label="Images"
+                    <ToggleButtonGroup
+                        fullWidth
+                        size='small'
+                        color="primary"
+                        value={pdfImages}
+                        exclusive
+                        onChange={handleChangeImages}
+                        aria-label="Images"
                     >
-                    <ToggleButton value="withImages">With Images</ToggleButton>
-                    <ToggleButton value="withoutImages">Without Images</ToggleButton>
-                </ToggleButtonGroup>
+                        <ToggleButton value="withImages">With Images</ToggleButton>
+                        <ToggleButton value="withoutImages">Without Images</ToggleButton>
+                    </ToggleButtonGroup>
                 </div>
-                <div class="my-5">
-                <ToggleButtonGroup
-                    color="primary"
-                    value={pdfLinks}
-                    exclusive
-                    onChange={handleChangeLinks}
-                    aria-label="Links"
+
+                <div class="my-1">
+                    <ToggleButtonGroup
+                        fullWidth
+                        size='small'
+                        color="primary"
+                        value={pdfLinks}
+                        exclusive
+                        onChange={handleChangeLinks}
+                        aria-label="Links"
                     >
-                    <ToggleButton value="withLinks">With Links</ToggleButton>
-                    <ToggleButton value="withoutLinks">Without Links</ToggleButton>
-                </ToggleButtonGroup>
+                        <ToggleButton value="withLinks">With Links</ToggleButton>
+                        <ToggleButton value="withoutLinks">Without Links</ToggleButton>
+                    </ToggleButtonGroup>
+                </div>
+                <div class="my-1">
+                    <ToggleButtonGroup
+                        fullWidth
+                        size='small'
+                        color="primary"
+                        value={pdfToc}
+                        exclusive
+                        onChange={handleChangeToc}
+                        aria-label="Toc"
+                    >
+                        <ToggleButton value="withToc">With TOC</ToggleButton>
+                        <ToggleButton value="withoutToc">Without TOC</ToggleButton>
+                    </ToggleButtonGroup>
+                </div>
+                <div class="my-1">
+                    <ToggleButtonGroup
+                        fullWidth
+                        size='small'
+                        color="primary"
+                        value={pdfPagination}
+                        exclusive
+                        onChange={handleChangePagination}
+                        aria-label="Pagination"
+                    >
+                        <ToggleButton value="withPagination">With Pagination</ToggleButton>
+                        <ToggleButton value="withoutPagination">Without Pagination</ToggleButton>
+                    </ToggleButtonGroup>
+                </div>
+                <div class="my-1">
+                    <ToggleButtonGroup
+                        fullWidth
+                        size='small'
+                        color="primary"
+                        value={pdfInfobox}
+                        exclusive
+                        onChange={handleChangeInfobox}
+                        aria-label="Infobox"
+                    >
+                        <ToggleButton value="withInfobox">With InfoBox</ToggleButton>
+                        <ToggleButton value="withoutInfobox">Without InfoBox</ToggleButton>
+                    </ToggleButtonGroup>
                 </div>
                 <div>
                     <TocModal />

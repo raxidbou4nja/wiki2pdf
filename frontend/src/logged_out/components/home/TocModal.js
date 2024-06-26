@@ -57,7 +57,7 @@ export default function TocModal() {
 
 return (
     <React.Fragment>
-        <Button variant="outlined" onClick={handleClickOpen}>
+        <Button variant="outlined" onClick={handleClickOpen} className='mt-2 mx-auto d-block'>
             Choose Sections
         </Button>
         <BootstrapDialog
@@ -66,7 +66,7 @@ return (
             open={open}
         >
             <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                Modal title
+                Select Sections
             </DialogTitle>
             <IconButton
                 aria-label="close"

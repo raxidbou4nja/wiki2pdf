@@ -24,6 +24,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('check-url', [App\Http\Controllers\Api\PdfController::class, 'checkUrl']);
         Route::post('get-editor', [App\Http\Controllers\Api\PdfController::class, 'getEditor']);
         Route::post('generate-pdf', [App\Http\Controllers\Api\PdfController::class, 'generatePdf']);
+        Route::get('download-pdf/{code}/{timestamp}', [App\Http\Controllers\Api\PdfController::class, 'downloadPdf']);
+        Route::get('preview-pdf/{code}/{timestamp}', [App\Http\Controllers\Api\PdfController::class, 'previewPdf']);
+        Route::get('wikipedia_handler/{code}', [App\Http\Controllers\Api\PdfController::class, 'wikipediaHandler'])->name('wikipedia_handler');
     });
 
     // auth/verifyToken sanctum group prefix

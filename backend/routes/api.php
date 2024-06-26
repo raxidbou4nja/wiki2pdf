@@ -20,6 +20,12 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('auth/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
     Route::post('auth/register', [App\Http\Controllers\Api\AuthController::class, 'register']);
 
+    Route::group(['prefix' => 'pdf'], function () {
+        Route::post('check-url', [App\Http\Controllers\Api\PdfController::class, 'checkUrl']);
+        Route::post('get-editor', [App\Http\Controllers\Api\PdfController::class, 'getEditor']);
+        Route::post('generate-pdf', [App\Http\Controllers\Api\PdfController::class, 'generatePdf']);
+    });
+
     // auth/verifyToken sanctum group prefix
     Route::group(['prefix' => 'auth', 'middleware' => 'auth:sanctum'], function () {
         // Route::get('user', [App\Http\Controllers\Api\AuthController::class, 'user']);

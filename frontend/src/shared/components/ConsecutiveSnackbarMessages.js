@@ -14,7 +14,7 @@ const styles = (theme) => ({
 
 function ConsecutiveSnackbars(props) {
   const { classes, getPushMessageFromChild } = props;
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
   const [messageInfo, setMessageInfo] = useState({});
   const queue = useRef([]);
 

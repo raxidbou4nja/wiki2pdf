@@ -107,11 +107,19 @@ const pdfSlice = createSlice({
         });
 
         builder.addCase(generatePdfAction.fulfilled, (state, action) => {
+            
+            if (action.payload.error){
+                state.error = action.payload.error;
+                state.showResultPage = false;
+                state.showEditorPanel = false;
+                state.showDownloadPanel = false;
+                return;
+            }
+
             state.showResultPage = false;
             state.showEditorPanel = false;
             state.showDownloadPanel = true;
-            state.error = null;
-
+            
             state.downloadUrl = action.payload.downloadUrl;
             state.previewUrl = action.payload.previewUrl;
         });

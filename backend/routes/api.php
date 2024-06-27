@@ -33,6 +33,14 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'auth', 'middleware' => 'auth:sanctum'], function () {
         // Route::get('user', [App\Http\Controllers\Api\AuthController::class, 'user']);
         // Route::post('logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
+        
+        // pdfs
+        Route::group(['prefix' => 'pdf'], function () {
+            Route::get('list', [App\Http\Controllers\Api\PdfController::class, 'index']);
+            // Route::get('get/{code}', [App\Http\Controllers\Api\PdfController::class, 'get']);
+            // Route::post('delete/{code}', [App\Http\Controllers\Api\PdfController::class, 'delete']);
+        });
+
         Route::post('verifyToken', [App\Http\Controllers\Api\AuthController::class, 'verifyToken']);
     });
 

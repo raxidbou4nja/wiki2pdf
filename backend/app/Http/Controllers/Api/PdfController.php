@@ -21,9 +21,33 @@ class PdfController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $page = $request->page ?? 1;
+        $search = $request->search ?? null;
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
+
+        $pdfs = new Pdf;
+
+        if ($request->has('search')) 
+        {
+            $pdfs = $pdfs->where('title', 'like', '%'.$request->search.'%');
+        }
+
+        if (!auth()->user()->isAdmin()) 
+        {
+            $pdfs = $pdfs->where('userid', auth()->user()->id);
+        }
+
+        $pdfs = $pdfs->orderBy('id', 'desc')->offset($offset)->limit($limit)->get();
+
+        if ($pdfs->isEmpty()) 
+        {
+            return response()->json(['error' => 'No Pdfs Found']);
+        }
+
+        return response()->json($pdfs);
     }
 
     /**
@@ -83,7 +107,7 @@ class PdfController extends Controller
 
         if (!$validator->passes()) 
         {
-            $result['error'] = "YOU HAVE AN ERROR";
+            return response()->json(['error'=> $validator->errors()->all()]);
             
         }
 
@@ -101,8 +125,7 @@ class PdfController extends Controller
 
         if ($content === false) 
         {
-            $result['error'] = "Page Not Found OR UnAvailable";
-            return response()->json($result);
+            return response()->json(['error' => 'YOU HAVE An ERROR']);
         }
 
         $json_content = json_decode($content);
@@ -138,19 +161,17 @@ class PdfController extends Controller
             'title' => 'required',
         ]);
 
+
         if (!$validator->passes()) 
         {
             return response()->json(['error'=> $validator->errors()->all()]);
         }
 
-        $url = 'https://'.
-                $request->lang.
-                '.m.wikipedia.org/wiki/?curid='.
-                $request->pageId;
+        $url = 'https://'. $request->lang. '.m.wikipedia.org/wiki/?curid='. $request->pageId;
+
 
         $pdf = new Pdf();
-
-        $pdf->userid = auth()->user()->id ?? 0;
+        $pdf->userid = $request->user()->id ?? null;
         $pdf->ip = request()->ip();
         $pdf->url = $url;
         $pdf->title = $request->title;
@@ -238,8 +259,8 @@ class PdfController extends Controller
         
 
         return response()->json([
-            'downloadUrl' => config('app.url') . "/download-pdf/". $pdf->code ."/". $pdf->updated_at->timestamp,
-            'previewUrl' => config('app.url') . "/preview-pdf/". $pdf->code ."/". $pdf->updated_at->timestamp,
+            'downloadUrl' => config('app.url') . "/api/v1/pdf/download-pdf/". $pdf->code ."/". $pdf->updated_at->timestamp,
+            'previewUrl' => config('app.url') . "/api/v1/pdf/preview-pdf/". $pdf->code ."/". $pdf->updated_at->timestamp,
         ]);
     }
 
@@ -474,10 +495,48 @@ class PdfController extends Controller
         $converter->binary = $this->wk_binary;
 
 
-        if (!$converter->send()) {
+        if (!$converter->send($pdf->title . '.pdf')) {
             $error = $converter->getError();
         }
     }
 
+
+    public function previewPdf($code, $timestamp)
+    {
+
+        $pdf = Pdf::where('code', $code)->get();
+
+        if ($pdf->isEmpty()) 
+        {
+            return response()->json(['error' => 'Pdf Not Found']);
+        }
+
+
+        $pdf = $pdf[0];
+
+        $title = $pdf->title .' - ' . config("app.name");
+        
+        ob_start();
+        $this->wikipediaHandler($pdf->code);
+        $html = ob_get_clean();
+
+        $options =  array();
+        $options[0] = 'disable-smart-shrinking';
+        $options['page-size'] = 'A4';
+        $options['title'] = $title;
+
+        if ($pdf->pagination == 1) {
+            $options['footer-center']  = 'Page [page] of [toPage]';
+        }
+
+        $converter = new converter($options);
+        $converter->addPage($html);
+        $converter->binary = $this->wk_binary;
+
+
+        if (!$converter->send()) {
+            $error = $converter->getError();
+        }
+    }
 
 }

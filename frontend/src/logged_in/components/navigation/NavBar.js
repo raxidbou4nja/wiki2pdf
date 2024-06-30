@@ -24,12 +24,15 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
 import MenuIcon from "@mui/icons-material/Menu";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import MessagePopperButton from "./MessagePopperButton";
 import SideDrawer from "./SideDrawer";
 import Balance from "./Balance";
 import NavigationDrawer from "../../../shared/components/NavigationDrawer";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { store } from "../../../redux/store";
+import { useDispatch } from "react-redux";
+import { loginAction, logoutAction } from "../../../redux/slices/authSlice";
 
 const styles = (theme) => ({
   appBar: {
@@ -126,6 +129,9 @@ const styles = (theme) => ({
   },
 });
 
+
+
+
 function NavBar(props) {
   const { selectedTab, messages, classes, openAddBalanceDialog, theme } = props;
   // Will be use to make website more accessible by screen readers
@@ -133,6 +139,8 @@ function NavBar(props) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false);
   const isWidthUpSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const dispatch = useDispatch();
+
 
   const openMobileDrawer = useCallback(() => {
     setIsMobileOpen(true);
@@ -150,7 +158,9 @@ function NavBar(props) {
     setIsSideDrawerOpen(false);
   }, [setIsSideDrawerOpen]);
 
-
+  const handleLogout = () => {
+    dispatch(logoutAction());
+  }
   
   const menuItems = [
     {
@@ -188,14 +198,14 @@ function NavBar(props) {
       show: store.getState().auth?.roles?.includes("admin")
     },
     {
-      link: "/c/subscription",
-      name: "Subscription",
+      link: "/c/pdf",
+      name: "Pdf",
       onClick: closeMobileDrawer,
       icon: {
         desktop: (
-          <AccountBalanceIcon
+          <PictureAsPdfIcon
             className={
-              selectedTab === "Subscription"
+              selectedTab === "Pdf"
                 ? classes.textPrimary
                 : "text-white"
             }
@@ -242,7 +252,7 @@ function NavBar(props) {
                 display="inline"
                 color="primary"
               >
-                Wa
+                Wiki2
               </Typography>
               <Typography
                 variant="h4"
@@ -250,7 +260,7 @@ function NavBar(props) {
                 display="inline"
                 color="secondary"
               >
-                Ver
+                Pdf
               </Typography>
             </Hidden>
           </Box>
@@ -260,43 +270,33 @@ function NavBar(props) {
             alignItems="center"
             width="100%"
           >
-            {isWidthUpSm && (
-              <Box mr={3}>
-                <Balance
-                  balance={2573}
-                  openAddBalanceDialog={openAddBalanceDialog}
-                />
-              </Box>
-            )}
-            <MessagePopperButton messages={messages} />
             <ListItem
               disableGutters
               className={classNames(classes.iconListItem, classes.smBordered)}
             >
               <Avatar
                 alt="profile picture"
-                src={`${process.env.PUBLIC_URL}/images/logged_in/profilePicture.jpg`}
+                src={`https://ui-avatars.com/api/?name=${ store.getState().auth?.user.name}&color=FFFFFF&background=09090b`}
                 className={classNames(classes.accountAvatar)}
               />
               {isWidthUpSm && (
                 <ListItemText
                   className={classes.username}
                   primary={
-                    <Typography color="textPrimary">Username</Typography>
+                    <Typography color="textPrimary">{ store.getState().auth?.user.name }</Typography>
                   }
                 />
               )}
             </ListItem>
           </Box>
           <IconButton
-            onClick={openDrawer}
+            onClick={handleLogout}
             color="primary"
             aria-label="Open Sidedrawer"
             size="large"
           >
-            <SupervisorAccountIcon />
+            <PowerSettingsNewIcon />
           </IconButton>
-          <SideDrawer open={isSideDrawerOpen} onClose={closeDrawer} />
         </Toolbar>
       </AppBar>
       <Hidden smDown>

@@ -32,7 +32,8 @@ Route::group(['prefix' => 'v1'], function () {
     // auth/verifyToken sanctum group prefix
     Route::group(['prefix' => 'auth', 'middleware' => 'auth:sanctum'], function () {
         // Route::get('user', [App\Http\Controllers\Api\AuthController::class, 'user']);
-        // Route::post('logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
+        
+        Route::post('logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
         
         // pdfs
         Route::group(['prefix' => 'pdf'], function () {

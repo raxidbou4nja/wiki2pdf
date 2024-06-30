@@ -78,4 +78,12 @@ class AuthController extends Controller
             'roles' => $request->user()->getRoleNames()
         ], 200);
     }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response([
+            'message' => 'loggedOut'
+        ], 200);
+    }
 }

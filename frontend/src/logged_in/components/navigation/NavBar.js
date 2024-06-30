@@ -215,18 +215,7 @@ function NavBar(props) {
         mobile: <AccountBalanceIcon className="text-white" />,
       },
       show: store.getState().auth?.roles?.includes("admin")
-    },
-    {
-      link: "/",
-      name: "Logout",
-      icon: {
-        desktop: (
-          <PowerSettingsNewIcon className="text-white" fontSize="small" />
-        ),
-        mobile: <PowerSettingsNewIcon className="text-white" />,
-      },
-      show: store.getState().auth?.roles?.includes("admin")
-    },
+    }
   ];
   return (
     <Fragment>

@@ -9,6 +9,9 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import BookIcon from "@mui/icons-material/Book";
 import NavigationDrawer from "../../../shared/components/NavigationDrawer";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../../../redux/slices/authSlice";
 
 const styles = theme => ({
   appBar: {
@@ -33,7 +36,7 @@ const styles = theme => ({
 });
 
 function NavBar(props) {
-
+  const dispatch = useDispatch();
   const isAuthenticated = localStorage.getItem("token") ? true : false;
 
   const {
@@ -69,6 +72,12 @@ function NavBar(props) {
       onClick: openLoginDialog,
       icon: <LockOpenIcon className="text-white" />,
       show: !isAuthenticated
+    },
+    {
+      name: "Account",
+      link: "/c/pdf",
+      icon: <AccountCircleIcon className="text-white" />,
+      show: isAuthenticated
     }
   ];
   return (
@@ -82,7 +91,7 @@ function NavBar(props) {
               display="inline"
               color="primary"
             >
-              Wa
+              Wiki2
             </Typography>
             <Typography
               variant="h4"
@@ -90,7 +99,7 @@ function NavBar(props) {
               display="inline"
               color="secondary"
             >
-              Ver
+              Pdf
             </Typography>
           </div>
           <div>

@@ -29,6 +29,7 @@ import SideDrawer from "./SideDrawer";
 import Balance from "./Balance";
 import NavigationDrawer from "../../../shared/components/NavigationDrawer";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { store } from "../../../redux/store";
 
 const styles = (theme) => ({
   appBar: {
@@ -149,6 +150,8 @@ function NavBar(props) {
     setIsSideDrawerOpen(false);
   }, [setIsSideDrawerOpen]);
 
+
+  
   const menuItems = [
     {
       link: "/c/dashboard",
@@ -165,6 +168,7 @@ function NavBar(props) {
         ),
         mobile: <DashboardIcon className="text-white" />,
       },
+      show: store.getState().auth?.roles?.includes("user")
     },
     {
       link: "/c/posts",
@@ -181,6 +185,7 @@ function NavBar(props) {
         ),
         mobile: <ImageIcon className="text-white" />,
       },
+      show: store.getState().auth?.roles?.includes("admin")
     },
     {
       link: "/c/subscription",
@@ -199,6 +204,7 @@ function NavBar(props) {
         ),
         mobile: <AccountBalanceIcon className="text-white" />,
       },
+      show: store.getState().auth?.roles?.includes("admin")
     },
     {
       link: "/",
@@ -209,6 +215,7 @@ function NavBar(props) {
         ),
         mobile: <PowerSettingsNewIcon className="text-white" />,
       },
+      show: store.getState().auth?.roles?.includes("admin")
     },
   ];
   return (
@@ -302,47 +309,51 @@ function NavBar(props) {
         >
           <List>
             {menuItems.map((element, index) => (
-              <Link
-                to={element.link}
-                className={classes.menuLink}
-                onClick={element.onClick}
-                key={index}
-                ref={(node) => {
-                  links.current[index] = node;
-                }}
-              >
-                <Tooltip
-                  title={element.name}
-                  placement="right"
-                  key={element.name}
+              element.show && (
+                <Link
+                  to={element.link}
+                  className={classes.menuLink}
+                  onClick={element.onClick}
+                  key={index}
+                  ref={(node) => {
+                    links.current[index] = node;
+                  }}
                 >
-                  <ListItem
-                    selected={selectedTab === element.name}
-                    button
-                    divider={index !== menuItems.length - 1}
-                    className={classes.permanentDrawerListItem}
-                    onClick={() => {
-                      links.current[index].click();
-                    }}
-                    aria-label={
-                      element.name === "Logout"
-                        ? "Logout"
-                        : `Go to ${element.name}`
-                    }
+                  <Tooltip
+                    title={element.name}
+                    placement="right"
+                    key={element.name}
                   >
-                    <ListItemIcon className={classes.justifyCenter}>
-                      {element.icon.desktop}
-                    </ListItemIcon>
-                  </ListItem>
-                </Tooltip>
-              </Link>
+                    <ListItem
+                      selected={selectedTab === element.name}
+                      button
+                      divider={index !== menuItems.length - 1}
+                      className={classes.permanentDrawerListItem}
+                      onClick={() => {
+                        links.current[index].click();
+                      }}
+                      aria-label={
+                        element.name === "Logout"
+                          ? "Logout"
+                          : `Go to ${element.name}`
+                      }
+                    >
+                      <ListItemIcon className={classes.justifyCenter}>
+                        {element.icon.desktop}
+                      </ListItemIcon>
+                    </ListItem>
+                  </Tooltip>
+                </Link>
+              )
             ))}
           </List>
         </Drawer>
       </Hidden>
       <NavigationDrawer
-        menuItems={menuItems.map((element) => ({
+        menuItems = { menuItems.map((element) => (
+          {
           link: element.link,
+          show: element.show,
           name: element.name,
           icon: element.icon.mobile,
           onClick: element.onClick,

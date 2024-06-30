@@ -8,6 +8,7 @@ import { store } from "./redux/store";
 import { Provider, useDispatch } from "react-redux";
 import PrivateRoute from "./redux/privateRoute";
 import { verifyToken } from "./redux/slices/authSlice"
+import { LoadingProvider } from "./shared/components/LoadingContext";
 
 const LoggedInComponent = lazy(() => import("./logged_in/components/Main"));
 
@@ -33,6 +34,7 @@ function App() {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <GlobalStyles />
+            <LoadingProvider>
             <Pace color={theme.palette.primary.light} />
             <Suspense fallback={<Fragment />}>
               <LocationLogger />
@@ -43,6 +45,7 @@ function App() {
                 </Route>
               </Switch>
             </Suspense>
+            </LoadingProvider>
           </ThemeProvider>
         </StyledEngineProvider>
       </BrowserRouter>

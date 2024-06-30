@@ -26,6 +26,24 @@ export const generatePdfAction = createAsyncThunk('pdf/generatePdf', async () =>
 });
 
 
+export const listPdfsAction = createAsyncThunk('auth/pdf/list', async (params) => {
+    const response = await apiEndpointHandler('auth/pdf/list').getItems(params);
+    console.log(response.data);
+    return response.data;
+});
+
+export const deletePdfAction = createAsyncThunk('auth/pdf/delete', async (params, { dispatch, getState }) => {
+    const response = await apiEndpointHandler('auth/pdf/delete').deleteItem(params);
+
+    if (!response.data.error) {
+        await dispatch(listPdfsAction({ pageId: getState().pdf.pageId }));
+    }
+    
+    return response.data;
+});
+
+
+
 const initialState = {
     url: null,
     title: null,
@@ -48,6 +66,9 @@ const initialState = {
     themes: {},
     downloadUrl: null,
     previewUrl: null,
+
+    pdfs: {},
+    loadingPdfs: true,
     };
 
 
@@ -123,6 +144,19 @@ const pdfSlice = createSlice({
             state.downloadUrl = action.payload.downloadUrl;
             state.previewUrl = action.payload.previewUrl;
         });
+
+        builder.addCase(listPdfsAction.fulfilled, (state, action) => {
+            state.pdfs = action.payload;
+            state.loadingPdfs = false;
+        });
+
+        builder.addCase(deletePdfAction.fulfilled, (state, action) => {
+            if (action.payload.error){
+                state.error = action.payload.error;
+                return;
+            }
+        });
+        
 
     },
 });

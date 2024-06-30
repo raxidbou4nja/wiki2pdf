@@ -67,6 +67,7 @@ function NavigationDrawer(props) {
       </Toolbar>
       <List className={classes.blackList}>
         {menuItems.map((element) => {
+          if(!element.show) return null;
           if (element.link) {
             return (
               <Link

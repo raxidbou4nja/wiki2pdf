@@ -7,6 +7,7 @@ import Posts from "./posts/Posts";
 import Subscription from "./subscription/Subscription";
 import PropsRoute from "../../shared/components/PropsRoute";
 import useLocationBlocker from "../../shared/functions/useLocationBlocker";
+import List from "./pdfs/List";
 
 const styles = (theme) => ({
   wrapper: {
@@ -63,12 +64,18 @@ function Routing(props) {
     selectDashboard,
     selectPosts,
     selectSubscription,
+    selectPdf,
     openAddBalanceDialog,
   } = props;
   useLocationBlocker();
   return (
     <div className={classes.wrapper}>
-      <Switch>
+      <Switch> 
+         <PropsRoute
+          path="/c/pdf"
+          component={List}
+          selectPdf={selectPdf}
+        />
         <PropsRoute
           path="/c/posts"
           component={Posts}
@@ -101,6 +108,8 @@ function Routing(props) {
           isAccountActivated={isAccountActivated}
           selectDashboard={selectDashboard}
         />
+
+
       </Switch>
     </div>
   );
@@ -125,6 +134,7 @@ Routing.propTypes = {
   selectDashboard: PropTypes.func.isRequired,
   selectPosts: PropTypes.func.isRequired,
   selectSubscription: PropTypes.func.isRequired,
+  selectPdf: PropTypes.func.isRequired,
   openAddBalanceDialog: PropTypes.func.isRequired,
 };
 

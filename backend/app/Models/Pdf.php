@@ -25,4 +25,11 @@ class Pdf extends Model
         'pagination',
         'toc',
     ];
+
+
+    // theme
+    public function themes()
+    {
+        return $this->belongsTo(Theme::class, 'theme', 'id');
+    }
 }

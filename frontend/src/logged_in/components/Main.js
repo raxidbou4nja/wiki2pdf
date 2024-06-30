@@ -296,6 +296,14 @@ function Main(props) {
     setSelectedTab("Subscription");
   }, [setSelectedTab]);
 
+
+  const selectPdf = useCallback(() => {
+    smoothScrollTop();
+    document.title = "WaVer - Pdf";
+    setSelectedTab("Pdf");
+  }, [setSelectedTab]);
+
+
   const getPushMessageFromChild = useCallback(
     (pushMessage) => {
       setPushMessageToSnackbar(() => pushMessage);
@@ -352,6 +360,7 @@ function Main(props) {
           openAddBalanceDialog={openAddBalanceDialog}
           setTargets={setTargets}
           setPosts={setPosts}
+          selectPdf={selectPdf}
         />
       </main>
     </Fragment>

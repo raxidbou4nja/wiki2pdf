@@ -26,7 +26,9 @@ export const verifyToken = createAsyncThunk('auth/verifyToken', async () => {
 const initialState = {
     user: null,
     token: null,
+    roles: [],
     isAuthenticated: false,
+    isLoading: true,
     };
 
 const authSlice = createSlice({
@@ -37,11 +39,14 @@ const authSlice = createSlice({
         builder.addCase(loginAction.fulfilled, (state, action) => {
             state.user = action.payload.user;
             state.token = action.payload.token;
+            state.roles = action.payload.roles;
+            state.isLoading = false;
             state.isAuthenticated = true;
 
             if (state.user && state.token) {
                 localStorage.setItem('token', state.token);
                 localStorage.setItem('user', JSON.stringify(state.user));
+                localStorage.setItem('roles', JSON.stringify(state.roles));
             }
         });
         builder.addCase(registerAction.fulfilled, (state, action) => {
@@ -52,29 +57,44 @@ const authSlice = createSlice({
             if (state.user && state.token) {
                 localStorage.setItem('token', state.token);
                 localStorage.setItem('user', JSON.stringify(state.user));
+                localStorage.setItem('roles', JSON.stringify(state.roles));
             }
         });
         builder.addCase(logoutAction.fulfilled, (state, action) => {
             state.user = null;
             state.token = null;
+            state.roles = [];
+
             state.isAuthenticated = false;
+
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('roles');
+
         });
         builder.addCase(verifyToken.fulfilled, (state, action) => {
             state.user = action.payload.user;
             state.token = action.payload.token;
+            state.roles = action.payload.roles;
+            state.isLoading = false;
             state.isAuthenticated = true;
+
 
             if (state.user && state.token) {
                 localStorage.setItem('token', state.token);
                 localStorage.setItem('user', JSON.stringify(state.user));
+                localStorage.setItem('roles', JSON.stringify(state.roles));
             }
         });
         builder.addCase(verifyToken.rejected, (state, action) => {
             state.user = null;
             state.token = null;
+            state.roles = [];
             state.isAuthenticated = false;
+            state.isLoading = false;
             localStorage.removeItem('token');
             localStorage.removeItem('user');
+            localStorage.removeItem('roles');
         });
     },
 });

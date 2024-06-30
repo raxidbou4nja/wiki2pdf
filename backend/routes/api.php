@@ -25,7 +25,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('get-editor', [App\Http\Controllers\Api\PdfController::class, 'getEditor']);
         Route::post('generate-pdf', [App\Http\Controllers\Api\PdfController::class, 'generatePdf']);
         Route::get('download-pdf/{code}/{timestamp}', [App\Http\Controllers\Api\PdfController::class, 'downloadPdf']);
-        Route::get('preview-pdf/{code}/{timestamp}', [App\Http\Controllers\Api\PdfController::class, 'previewPdf']);
+        Route::get('preview-pdf/{code}/{timestamp?}', [App\Http\Controllers\Api\PdfController::class, 'previewPdf']);
         Route::get('wikipedia_handler/{code}', [App\Http\Controllers\Api\PdfController::class, 'wikipediaHandler'])->name('wikipedia_handler');
     });
 
@@ -38,7 +38,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::group(['prefix' => 'pdf'], function () {
             Route::get('list', [App\Http\Controllers\Api\PdfController::class, 'index']);
             // Route::get('get/{code}', [App\Http\Controllers\Api\PdfController::class, 'get']);
-            // Route::post('delete/{code}', [App\Http\Controllers\Api\PdfController::class, 'delete']);
+            Route::delete('delete/{code}', [App\Http\Controllers\Api\PdfController::class, 'destroy']);
         });
 
         Route::post('verifyToken', [App\Http\Controllers\Api\AuthController::class, 'verifyToken']);

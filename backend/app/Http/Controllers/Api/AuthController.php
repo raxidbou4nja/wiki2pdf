@@ -35,7 +35,8 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
 
         return response([
-            'user' => $user,
+            'user' => $user->only('id', 'name', 'email'),
+            'roles' => $user->getRoleNames(),
             'token' => $token
         ]);
     }
@@ -62,7 +63,8 @@ class AuthController extends Controller
         $token = $user->createToken('token')->plainTextToken;
 
         return response([
-            'user' => $user,
+            'user' => $user->only('id', 'name', 'email'),
+            'roles' => $user->getRoleNames(),
             'token' => $token
         ], 200);
     }
@@ -71,8 +73,9 @@ class AuthController extends Controller
     {
         return response([
             'message' => 'validToken',
-            'token' => $request->user()->currentAccessToken()->plainTextToken,
-            'user' => $request->user()
+            'token' => $request->bearerToken(),
+            'user' => $request->user()->only('id', 'name', 'email'),
+            'roles' => $request->user()->getRoleNames()
         ], 200);
     }
 }

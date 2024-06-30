@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Drnxloc\LaravelHtmlDom\HtmlDomParser;
 use mikehaertl\wkhtmlto\Pdf as converter;
+use Laravel\Sanctum\PersonalAccessToken;
+use App\Models\User;
+use App\Http\Resources\PdfResource;
+
 class PdfController extends Controller
 {
 
@@ -40,14 +44,16 @@ class PdfController extends Controller
             $pdfs = $pdfs->where('userid', auth()->user()->id);
         }
 
-        $pdfs = $pdfs->orderBy('id', 'desc')->offset($offset)->limit($limit)->get();
+        $pdfs = $pdfs->with('themes')->orderBy('id', 'desc')->offset($offset)->limit($limit)->get();
 
         if ($pdfs->isEmpty()) 
         {
             return response()->json(['error' => 'No Pdfs Found']);
         }
 
-        return response()->json($pdfs);
+        return response()->json(
+            PdfResource::collection($pdfs)
+        );
     }
 
     /**
@@ -93,9 +99,21 @@ class PdfController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(cr $cr)
+    public function destroy(Request $request)
     {
-        //
+
+        if (!$request->code)
+        { 
+            return response()->json(['error' => 'Pdf Not Found']);
+        }
+        
+        
+        Pdf::where('code', $request->code)->delete();
+
+        return response()->json(['success' => 'Pdf Deleted']);
+        
+
+
     }
 
     // checkUrl
@@ -161,6 +179,10 @@ class PdfController extends Controller
             'title' => 'required',
         ]);
 
+        $bearerToken = $request->bearerToken();
+
+        $user = optional(PersonalAccessToken::findToken($bearerToken))->tokenable;
+
 
         if (!$validator->passes()) 
         {
@@ -171,7 +193,7 @@ class PdfController extends Controller
 
 
         $pdf = new Pdf();
-        $pdf->userid = $request->user()->id ?? null;
+        $pdf->userid = $user->id ?? null;
         $pdf->ip = request()->ip();
         $pdf->url = $url;
         $pdf->title = $request->title;
@@ -465,7 +487,7 @@ class PdfController extends Controller
     public function downloadPdf($code, $timestamp)
     {
 
-        $pdf = Pdf::where('code', $code)->get();
+        $pdf = Pdf::where('code', $code)->where('updated_at', '=', date('Y-m-d H:i:s', $timestamp))->get();
 
         if ($pdf->isEmpty()) 
         {
@@ -504,8 +526,8 @@ class PdfController extends Controller
     public function previewPdf($code, $timestamp)
     {
 
-        $pdf = Pdf::where('code', $code)->get();
-
+        $pdf = Pdf::where('code', $code)->where('updated_at', '=', date('Y-m-d H:i:s', $timestamp))->get();
+    
         if ($pdf->isEmpty()) 
         {
             return response()->json(['error' => 'Pdf Not Found']);

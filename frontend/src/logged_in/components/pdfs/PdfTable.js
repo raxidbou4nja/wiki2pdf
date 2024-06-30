@@ -104,7 +104,6 @@ function PdfTable(props) {
   const onDelete = useCallback((code) => {
     setIsDeletePdfDialogOpen(true);
     setDeletePdfId(code);
-    console.log(isDeletePdfDialogOpen)
   }, [setIsDeletePdfDialogOpen]);
 
   const closeDeletePdfDialog = useCallback(() => {

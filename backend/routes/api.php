@@ -32,6 +32,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'auth', 'middleware' => 'auth:sanctum'], function () {
         
         Route::post('logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
+        Route::post('update-profile', [App\Http\Controllers\Api\AuthController::class, 'updateProfile']);
 
         Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () {
             Route::get('dashboard/statistics', [App\Http\Controllers\Api\DashboardController::class, 'statistics']);

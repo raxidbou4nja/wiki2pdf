@@ -310,6 +310,13 @@ function Main(props) {
     setSelectedTab("Users");
   }, [setSelectedTab]);
 
+
+  const selectProfile = useCallback(() => {
+    smoothScrollTop();
+    document.title = "WaVer - Profile";
+    setSelectedTab("Profile");
+  }, [setSelectedTab]);
+
   const getPushMessageFromChild = useCallback(
     (pushMessage) => {
       setPushMessageToSnackbar(() => pushMessage);
@@ -368,6 +375,7 @@ function Main(props) {
           setPosts={setPosts}
           selectPdf={selectPdf}
           selectUsers={selectUsers}
+          selectProfile={selectProfile}
         />
       </main>
     </Fragment>

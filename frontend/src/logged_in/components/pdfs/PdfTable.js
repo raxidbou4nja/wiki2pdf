@@ -132,7 +132,7 @@ function PdfTable(props) {
     (_, newPage) => {
       showLoading();
       setPage(newPage);
-      dispatch(listPdfsAction({page: newPage})).then(() => hideLoading());
+      dispatch(listPdfsAction({page: newPage + 1})).then(() => hideLoading());
     },
     [setPage]
   );
@@ -210,9 +210,9 @@ function PdfTable(props) {
                     <IconButton onClick={() => window.open(`${appUrl}/pdf/download-pdf/${pdf.code}/${pdf.updated_at}`, "_blank")}>
                       <DownloadIcon />  
                     </IconButton>
-                    <Button onClick={() => window.open(`${appUrl}/pdf/preview-pdf/${pdf.code}/${pdf.updated_at}`, "_blank")}>
-                    <VisibilityIcon />  
-                    </Button>
+                    <IconButton onClick={() => window.open(`${appUrl}/pdf/preview-pdf/${pdf.code}/${pdf.updated_at}`, "_blank")}>
+                      <VisibilityIcon />  
+                    </IconButton>
                     <IconButton onClick={() => onDelete(pdf.code)}>
                       <DeleteIcon />
                     </IconButton>

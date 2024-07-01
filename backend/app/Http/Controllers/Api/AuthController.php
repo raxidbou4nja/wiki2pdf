@@ -86,4 +86,43 @@ class AuthController extends Controller
             'message' => 'loggedOut'
         ], 200);
     }
+
+    // update name and password if old password is correct
+    public function updateProfile(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'name' => 'required|min:4',
+            'old_password' => 'required',
+            'new_password' => 'required|min:6'
+        ]);
+
+        if ($validation->fails()) {
+            return response([
+            'errors' => $validation->errors()
+            ], 200);
+        }
+
+        $user = $request->user();
+
+        if (! \Hash::check($request->old_password, $user->password))
+        {
+            return response([
+                'errors' => [
+                    'old_password' => [
+                        'invalid Old Password'
+                    ]
+                ]
+            ], 200);
+        }
+
+        $user->update([
+            'name' => $request->name,
+            'password' => bcrypt($request->new_password)
+        ]);
+
+        return response([
+            'user' => $user->only('id', 'name', 'email'),
+            'success' => 'updated'
+        ], 200);
+    }
 }

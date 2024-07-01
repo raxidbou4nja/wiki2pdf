@@ -22,6 +22,12 @@ export const verifyToken = createAsyncThunk('auth/verifyToken', async () => {
     return response.data;
 });
 
+// update profile
+export const updateProfileAction = createAsyncThunk('auth/updateProfile', async (params) => {
+    const response = await apiEndpointHandler('auth/update-profile').createItem(params);
+    return response.data;
+});
+
 
 const initialState = {
     user: null,
@@ -29,6 +35,8 @@ const initialState = {
     roles: [],
     isAuthenticated: false,
     isLoading: true,
+    error: null,
+    success: null,
     };
 
 const authSlice = createSlice({
@@ -95,6 +103,18 @@ const authSlice = createSlice({
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('roles');
+        });
+
+        builder.addCase(updateProfileAction.fulfilled, (state, action) => {
+
+            if (action.payload.errors) {
+                state.error = action.payload.errors;
+                return;
+            }
+
+            state.user = action.payload.user;
+            state.error = null;
+            state.success = 'Profile updated successfully';
         });
     },
 });

@@ -59,7 +59,7 @@ const rows = [
   }
 ];
 
-const rowsPerPage = 2;
+const rowsPerPage = 5;
 
 function UserTable(props) {
 
@@ -107,7 +107,7 @@ function UserTable(props) {
     (_, newPage) => {
       showLoading();
       setPage(newPage);
-      dispatch(fetchUsersAction({page: newPage})).then(() => hideLoading());
+      dispatch(fetchUsersAction({page: newPage + 1})).then(() => hideLoading());
     },
     [setPage]
   );

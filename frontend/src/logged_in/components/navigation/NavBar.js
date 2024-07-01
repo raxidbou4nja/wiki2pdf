@@ -33,6 +33,8 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { store } from "../../../redux/store";
 import { useDispatch } from "react-redux";
 import { loginAction, logoutAction } from "../../../redux/slices/authSlice";
+import GroupIcon from '@mui/icons-material/Group';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const styles = (theme) => ({
   appBar: {
@@ -178,7 +180,7 @@ function NavBar(props) {
         ),
         mobile: <DashboardIcon className="text-white" />,
       },
-      show: store.getState().auth?.roles?.includes("user")
+      show: store.getState().auth?.roles?.includes("admin")
     },
     {
       link: "/c/posts",
@@ -212,7 +214,46 @@ function NavBar(props) {
             fontSize="small"
           />
         ),
-        mobile: <AccountBalanceIcon className="text-white" />,
+        mobile: <PictureAsPdfIcon className="text-white" />,
+      },
+      show: store.getState().auth?.roles?.includes("admin")
+    },
+    {
+      link: "/c/users",
+      name: "Users",
+      onClick: closeMobileDrawer,
+      icon: {
+        desktop: (
+          <GroupIcon
+            className={
+              selectedTab === "Users"
+                ? classes.textPrimary
+                : "text-white"
+            }
+            fontSize="small"
+          />
+        ),
+        mobile: <GroupIcon className="text-white" />,
+      },
+      show: store.getState().auth?.roles?.includes("admin")
+    }
+    ,
+    {
+      link: "/c/my-profile",
+      name: "My Profile",
+      onClick: closeMobileDrawer,
+      icon: {
+        desktop: (
+          <AccountCircleIcon
+            className={
+              selectedTab === "Profile"
+                ? classes.textPrimary
+                : "text-white"
+            }
+            fontSize="small"
+          />
+        ),
+        mobile: <AccountCircleIcon className="text-white" />,
       },
       show: store.getState().auth?.roles?.includes("admin")
     }
@@ -265,14 +306,14 @@ function NavBar(props) {
             >
               <Avatar
                 alt="profile picture"
-                src={`https://ui-avatars.com/api/?name=${ store.getState().auth?.user.name}&color=FFFFFF&background=09090b`}
+                src={`https://ui-avatars.com/api/?name=${ store.getState().auth?.user?.name}&color=FFFFFF&background=09090b`}
                 className={classNames(classes.accountAvatar)}
               />
               {isWidthUpSm && (
                 <ListItemText
                   className={classes.username}
                   primary={
-                    <Typography color="textPrimary">{ store.getState().auth?.user.name }</Typography>
+                    <Typography color="textPrimary">{ store.getState().auth?.user?.name }</Typography>
                   }
                 />
               )}

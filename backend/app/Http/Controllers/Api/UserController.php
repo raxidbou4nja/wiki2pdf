@@ -13,8 +13,8 @@ class UserController extends Controller
     {
         $page = $request->page ?? 1;
         $search = $request->search ?? null;
-        $limit = 2;
-        $offset = ($page - 1) * $limit + $limit;
+        $limit = 5;
+        $offset = ($page - 1) * $limit;
 
         $users = new User;
 

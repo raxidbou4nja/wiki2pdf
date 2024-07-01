@@ -57,7 +57,7 @@ class User extends Authenticatable
 
     public function pdfs()
     {
-        return $this->hasMany(Pdf::class, 'user_id', 'id');
+        return $this->hasMany(Pdf::class, 'userid', 'id');
     }
 
     // make attribute count pdfs

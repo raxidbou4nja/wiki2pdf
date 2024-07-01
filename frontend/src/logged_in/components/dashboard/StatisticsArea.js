@@ -36,7 +36,7 @@ function StatisticsArea(props) {
             type="users"
             color={theme.palette.secondary.light}
             height="70px"
-            title="Profit"
+            title="Users"
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -45,7 +45,7 @@ function StatisticsArea(props) {
             type="pdfs"
             color={theme.palette.primary.light}
             height="70px"
-            title="Views"
+            title="Pdfs"
           />
         </Grid>
       </Grid>

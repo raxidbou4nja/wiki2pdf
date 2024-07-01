@@ -31,7 +31,7 @@ class PdfResource extends JsonResource
             'pagination' => $this->pagination,
             'toc' => $this->toc,
             'created_at' => \Carbon\Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
-            'updated_at' => $this->updated_at->timestamp,
+            'updated_at' => $this->updated_at?->timestamp,
         ];
     }
 }

@@ -90,7 +90,7 @@ function PdfTable(props) {
 
   const { theme, classes } = props;
   const dispatch = useDispatch();
-  const { pdfs, loadingPdfs } = useSelector(state => state.pdf) || [];
+  const { pdfs, loadingPdfs, total } = useSelector(state => state.pdf) || [];
   const { showLoading, hideLoading } = useLoading();
 
   const [page, setPage] = useState(0);
@@ -130,7 +130,9 @@ function PdfTable(props) {
 
   const handleChangePage = useCallback(
     (_, newPage) => {
+      showLoading();
       setPage(newPage);
+      dispatch(listPdfsAction({page: newPage})).then(() => hideLoading());
     },
     [setPage]
   );
@@ -222,7 +224,7 @@ function PdfTable(props) {
         </Table>
         <TablePagination
           component="div"
-          count={pdfs.length}
+          count={total}
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
   AreaChart,
@@ -12,6 +12,8 @@ import format from "date-fns/format";
 import { Card, CardContent, Typography, IconButton, Menu, MenuItem, Box } from "@mui/material";
 import withStyles from '@mui/styles/withStyles';
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useDispatch, useSelector } from "react-redux";
+import { statisticsAction } from "../../redux/slices/dashboardSlice";
 
 const styles = (theme) => ({
   cardContentInner: {
@@ -34,12 +36,20 @@ function calculateMin(data, yKey, factor) {
 }
 
 const itemHeight = 216;
-const options = ["1 Week", "1 Month", "6 Months"];
+const options = ["Day", "Week", "Month"];
+
+
 
 function CardChart(props) {
-  const { color, data, title, classes, theme, height } = props;
+  const dispatch = useDispatch();
+
+  const { color, type, data, title, classes, theme, height } = props;
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedOption, setSelectedOption] = useState("1 Month");
+  const [selectedOption, setSelectedOption] = useState("Day");
+
+
+
+
 
   const handleClick = useCallback(
     (event) => {
@@ -57,41 +67,17 @@ function CardChart(props) {
 
   const getSubtitle = useCallback(() => {
     switch (selectedOption) {
-      case "1 Week":
-        return "Last week";
-      case "1 Month":
-        return "Last month";
-      case "6 Months":
-        return "Last 6 months";
+      case "Day":
+        return "By Day";
+      case "Week":
+        return "By Week";
+      case "Month":
+        return "By Month";
       default:
         throw new Error("No branch selected in switch-statement");
     }
   }, [selectedOption]);
 
-  const processData = useCallback(() => {
-    let seconds;
-    switch (selectedOption) {
-      case "1 Week":
-        seconds = 60 * 60 * 24 * 7;
-        break;
-      case "1 Month":
-        seconds = 60 * 60 * 24 * 31;
-        break;
-      case "6 Months":
-        seconds = 60 * 60 * 24 * 31 * 6;
-        break;
-      default:
-        throw new Error("No branch selected in switch-statement");
-    }
-    const minSeconds = new Date() / 1000 - seconds;
-    const arr = [];
-    for (let i = 0; i < data.length; i += 1) {
-      if (minSeconds < data[i].timestamp) {
-        arr.unshift(data[i]);
-      }
-    }
-    return arr;
-  }, [data, selectedOption]);
 
   const handleClose = useCallback(() => {
     setAnchorEl(null);
@@ -100,12 +86,15 @@ function CardChart(props) {
   const selectOption = useCallback(
     (selectedOption) => {
       setSelectedOption(selectedOption);
+      dispatch(statisticsAction({ type: type, group_by: selectedOption.toLowerCase() }));
       handleClose();
     },
     [setSelectedOption, handleClose]
   );
 
   const isOpen = Boolean(anchorEl);
+
+
   return (
     <Card>
       <Box pt={2} px={2} pb={4}>
@@ -157,43 +146,22 @@ function CardChart(props) {
       <CardContent>
         <Box className={classes.cardContentInner} height={height}>
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={processData()} type="number">
-              <XAxis
-                dataKey="timestamp"
-                type="number"
-                domain={["dataMin", "dataMax"]}
-                hide
-              />
-              <YAxis
-                domain={[calculateMin(data, "value", 0.05), "dataMax"]}
-                hide
-              />
-              <Area
-                type="monotone"
-                dataKey="value"
-                stroke={color}
-                fill={color}
-              />
-              <Tooltip
-                labelFormatter={labelFormatter}
-                formatter={formatter}
-                cursor={false}
-                contentStyle={{
-                  border: "none",
-                  padding: theme.spacing(1),
-                  borderRadius: theme.shape.borderRadius,
-                  boxShadow: theme.shadows[1],
-                }}
-                labelStyle={theme.typography.body1}
-                itemStyle={{
-                  fontSize: theme.typography.body1.fontSize,
-                  letterSpacing: theme.typography.body1.letterSpacing,
-                  fontFamily: theme.typography.body1.fontFamily,
-                  lineHeight: theme.typography.body1.lineHeight,
-                  fontWeight: theme.typography.body1.fontWeight,
-                }}
-              />
-            </AreaChart>
+          <AreaChart
+          width={500}
+          height={400}
+          data={data}
+          margin={{
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Area type="monotone" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+        </AreaChart>
           </ResponsiveContainer>
         </Box>
       </CardContent>

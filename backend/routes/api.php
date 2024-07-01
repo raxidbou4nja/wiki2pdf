@@ -34,6 +34,9 @@ Route::group(['prefix' => 'v1'], function () {
         // Route::get('user', [App\Http\Controllers\Api\AuthController::class, 'user']);
         
         Route::post('logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
+
+        // dashboard statistics
+        Route::get('dashboard/statistics', [App\Http\Controllers\Api\DashboardController::class, 'statistics']);
         
         // pdfs
         Route::group(['prefix' => 'pdf'], function () {

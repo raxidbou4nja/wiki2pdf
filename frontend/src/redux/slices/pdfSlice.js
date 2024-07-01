@@ -68,6 +68,7 @@ const initialState = {
     previewUrl: null,
 
     pdfs: {},
+    total: 0,
     loadingPdfs: true,
     };
 
@@ -146,7 +147,8 @@ const pdfSlice = createSlice({
         });
 
         builder.addCase(listPdfsAction.fulfilled, (state, action) => {
-            state.pdfs = action.payload;
+            state.pdfs = action.payload.pdfs;
+            state.total = action.payload.total;
             state.loadingPdfs = false;
         });
 

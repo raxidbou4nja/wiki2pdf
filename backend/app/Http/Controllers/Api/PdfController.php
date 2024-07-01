@@ -29,7 +29,7 @@ class PdfController extends Controller
     {
         $page = $request->page ?? 1;
         $search = $request->search ?? null;
-        $limit = 10;
+        $limit = 25;
         $offset = ($page - 1) * $limit;
 
         $pdfs = new Pdf;
@@ -44,7 +44,9 @@ class PdfController extends Controller
             $pdfs = $pdfs->where('userid', auth()->user()->id);
         }
 
-        $pdfs = $pdfs->with('themes')->orderBy('id', 'desc')->offset($offset)->limit($limit)->get();
+        $total = $pdfs->whereNot('updated_at', null)->count();
+
+        $pdfs = $pdfs->whereNot('updated_at', null)->with('themes')->orderBy('id', 'desc')->offset($offset)->limit($limit)->get();
 
         if ($pdfs->isEmpty()) 
         {
@@ -52,7 +54,12 @@ class PdfController extends Controller
         }
 
         return response()->json(
-            PdfResource::collection($pdfs)
+            [
+                'pdfs' => PdfResource::collection($pdfs),
+                'total' => $total,
+                'limit' => $limit,
+                'page' => $page,
+            ]
         );
     }
 
@@ -486,6 +493,10 @@ class PdfController extends Controller
 
     public function downloadPdf($code, $timestamp)
     {
+        if (!is_numeric($timestamp))
+        {
+            return response()->json(['error' => 'Pdf Not Found']);
+        }
 
         $pdf = Pdf::where('code', $code)->where('updated_at', '=', date('Y-m-d H:i:s', $timestamp))->get();
 
@@ -525,6 +536,10 @@ class PdfController extends Controller
 
     public function previewPdf($code, $timestamp)
     {
+        if (!is_numeric($timestamp))
+        {
+            return response()->json(['error' => 'Pdf Not Found']);
+        }
 
         $pdf = Pdf::where('code', $code)->where('updated_at', '=', date('Y-m-d H:i:s', $timestamp))->get();
     

@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Typography, Box } from "@mui/material";
-import PdfTable from "./PdfTable";
+import UserTable from "./UserTable";
 
 function UsersList(props) {
   const {
@@ -12,7 +12,7 @@ function UsersList(props) {
 
   return (
     <Fragment>
-      <PdfTable />
+      <UserTable />
     </Fragment>
   );
 }

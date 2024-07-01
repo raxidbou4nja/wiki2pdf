@@ -13,8 +13,8 @@ class UserController extends Controller
     {
         $page = $request->page ?? 1;
         $search = $request->search ?? null;
-        $limit = 25;
-        $offset = ($page - 1) * $limit;
+        $limit = 2;
+        $offset = ($page - 1) * $limit + $limit;
 
         $users = new User;
 
@@ -29,7 +29,7 @@ class UserController extends Controller
 
         if ($users->isEmpty()) 
         {
-            return response()->json(['error' => 'No users Found']);
+            return response()->json(['error' => 'No users Found'], 404);
         }
 
         return response()->json(
@@ -43,15 +43,20 @@ class UserController extends Controller
     }
 
 
-    public function show($id)
+    public function show(Request $request)
     {
+        $user = User::find($request->id);
+        
         return response()->json([
-            'message' => 'show'
+            'user' => new UserResource($user)
         ]);
     }
 
     public function destroy($id)
     {
+        $user = User::find($id);
+        $user->delete();
+
         return response()->json([
             'message' => 'destroy'
         ]);

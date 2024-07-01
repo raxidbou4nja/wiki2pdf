@@ -18,6 +18,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'count_pdfs' => $this->pdfs->count(),
             'created_at' => \Carbon\Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
         ];
     }

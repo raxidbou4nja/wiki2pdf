@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import { showUserAction } from '../../../redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
-import EditNoteIcon from '@mui/icons-material/EditNote';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -29,28 +29,28 @@ export default function ShowModal(props) {
 
     const [open, setOpen] = React.useState(false);
 
-    React.useEffect(() => {
-        if (user) {
-            dispatch(showUserAction(user));
-        }
-    }, [user]);
+    const userData = useSelector((state) => state.user.user);
+           
+            
+
 
     const submitSections = () => {
-      
-      setOpen(false);
+        setOpen(false);
     };
 
     const handleClickOpen = () => {
-      setOpen(true);
+        dispatch(showUserAction({ id: user }));
+        setOpen(true);
     };
+
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
     };
 
 return (
     <React.Fragment>
         <IconButton variant="outlined" onClick={handleClickOpen}>
-            <EditNoteIcon />
+            <VisibilityIcon />
         </IconButton>
         <BootstrapDialog
             onClose={handleClose}
@@ -58,7 +58,7 @@ return (
             open={open}
         >
             <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                Select Sections
+                User Data
             </DialogTitle>
             <IconButton
                 aria-label="close"
@@ -73,12 +73,49 @@ return (
                 <CloseIcon />
             </IconButton>
             <DialogContent dividers>
-                    
-            </DialogContent>
+                <form>
+                    <div class="text-center">
+                        <img
+                            src={`https://ui-avatars.com/api/?name=${userData.name}&color=FFFFFF&background=09090b`}
+                            alt="User"
+                            className="rounded-circle"
+                            style={{ width: '150px', height: '150px' }}
+                        />
+                    </div>
+
+                    <div className="form-group mt-3">
+                        <label htmlFor="name">Name:</label>
+                        <input
+                            type="text"
+                            id="name"
+                            className="form-control"
+                            value={userData.name}
+                            readOnly
+                        />
+                    </div>
+                    <div className="form-group mt-3">
+                        <label htmlFor="email">Email:</label>
+                        <input
+                            type="email"
+                            id="email"
+                            className="form-control"
+                            value={userData.email}
+                            readOnly
+                        />
+                    </div>
+                    <div className="form-group mt-3">
+                        <label htmlFor="email">Registred at:</label>
+                        <input
+                            type="text"
+                            id="text"
+                            className="form-control"
+                            value={userData.created_at}
+                            readOnly
+                    />
+                    </div>
+                </form>
+                </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={submitSections}>
-                    Save changes
-                </Button>
                 <Button autoFocus onClick={handleClose}>
                     Close
                 </Button>

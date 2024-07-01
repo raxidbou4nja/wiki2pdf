@@ -151,6 +151,11 @@ const pdfSlice = createSlice({
             state.total = action.payload.total;
             state.loadingPdfs = false;
         });
+        builder.addCase(listPdfsAction.rejected, (state, action) => {
+            state.pdfs = [];
+            state.total = 0;
+            state.loadingPdfs = false;
+        });
 
         builder.addCase(deletePdfAction.fulfilled, (state, action) => {
             if (action.payload.error){

@@ -5,7 +5,7 @@ import withStyles from '@mui/styles/withStyles';
 import EnhancedTableHead from "../../../shared/components/EnhancedTableHead";
 import HighlightedInformation from "../../../shared/components/HighlightedInformation";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsersAction } from "../../../redux/slices/userSlice";
+import { fetchUsersAction, deleteUserAction } from "../../../redux/slices/userSlice";
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -59,9 +59,9 @@ const rows = [
   }
 ];
 
-const rowsPerPage = 25;
+const rowsPerPage = 2;
 
-function PdfTable(props) {
+function UserTable(props) {
 
   const { theme, classes } = props;
   const dispatch = useDispatch();
@@ -69,31 +69,31 @@ function PdfTable(props) {
   const { showLoading, hideLoading } = useLoading();
 
   const [page, setPage] = useState(0);
-  const [isDeletePdfDialogOpen, setIsDeletePdfDialogOpen] = useState(false);
-  const [isDeletePdfDialogLoading, setIsDeletePdfDialogLoading] = useState(false);
-  const [deletePdfId, setDeletePdfId] = useState(null);
+  const [isDeleteUserDialogOpen, setIsDeleteUserDialogOpen] = useState(false);
+  const [isDeleteUserDialogLoading, setIsDeleteUserDialogLoading] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState(null);
 
 
   const appUrl = process.env.REACT_APP_API_URL;
 
   const onDelete = useCallback((code) => {
-    setIsDeletePdfDialogOpen(true);
-    setDeletePdfId(code);
-  }, [setIsDeletePdfDialogOpen]);
+    setIsDeleteUserDialogOpen(true);
+    setDeleteUserId(code);
+  }, [setIsDeleteUserDialogOpen]);
 
-  const closeDeletePdfDialog = useCallback(() => {
-    setIsDeletePdfDialogOpen(false);
-    setIsDeletePdfDialogLoading(false);
-  }, [setIsDeletePdfDialogOpen, setIsDeletePdfDialogLoading]);
+  const closeDeleteUserDialog = useCallback(() => {
+    setIsDeleteUserDialogOpen(false);
+    setIsDeleteUserDialogLoading(false);
+  }, [setIsDeleteUserDialogOpen, setIsDeleteUserDialogLoading]);
 
 
-  const deletePdf = useCallback(() => {
-    setIsDeletePdfDialogLoading(true);
-    // dispatch(deletePdfAction(deletePdfId)).then(() => {
-    //   setIsDeletePdfDialogLoading(false);
-    //   setIsDeletePdfDialogOpen(false);
-    // });
-  }, [dispatch, deletePdfId]);
+  const deleteUser = useCallback(() => {
+    setIsDeleteUserDialogLoading(true);
+    dispatch(deleteUserAction(deleteUserId)).then(() => {
+      setIsDeleteUserDialogLoading(false);
+      setIsDeleteUserDialogOpen(false);
+    });
+  }, [dispatch, deleteUserId]);
 
   useEffect(
     () => {
@@ -148,9 +148,9 @@ function PdfTable(props) {
                     className={classes.firstData}
                   >
                     <EditModal user={user.id} />
-                    {/* <IconButton onClick={() => onDelete(pdf.code)}>
+                    <IconButton onClick={() => onDelete(user.id)}>
                       <DeleteIcon />
-                    </IconButton> */}
+                    </IconButton>
                   </TableCell>        
                 </TableRow>
                 
@@ -178,12 +178,12 @@ function PdfTable(props) {
           labelRowsPerPage=""
         />
           <ConfirmationDialog
-            open={isDeletePdfDialogOpen}
+            open={isDeleteUserDialogOpen}
             title="Confirmation"
-            content="Do you really want to delete the Pdf?"
-            onClose={closeDeletePdfDialog}
-            loading={isDeletePdfDialogLoading}
-            onConfirm={deletePdf}
+            content="Do you really want to delete the User?"
+            onClose={closeDeleteUserDialog}
+            loading={isDeleteUserDialogLoading}
+            onConfirm={deleteUser}
           />
       </div>
       
@@ -198,9 +198,9 @@ function PdfTable(props) {
   );
 }
 
-PdfTable.propTypes = {
+UserTable.propTypes = {
   theme: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(PdfTable);
+export default withStyles(styles, { withTheme: true })(UserTable);

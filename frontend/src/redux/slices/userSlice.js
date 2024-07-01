@@ -9,6 +9,18 @@ export const fetchUsersAction = createAsyncThunk('auth/admin/users', async (para
 
 export const showUserAction = createAsyncThunk('auth/admin/user', async (params) => {
     const response = await apiEndpointHandler('auth/admin/user').getItems(params);
+    console.log("data: ", response.data);
+    return response.data;
+});
+
+
+export const deleteUserAction = createAsyncThunk('auth/admin/deleteUser', async (params, { dispatch, getState }) => {
+    const response = await apiEndpointHandler('auth/admin/user').deleteItem(params);
+
+    if (!response.data.error) {
+        await dispatch(fetchUsersAction());
+    }
+    
     return response.data;
 });
 
@@ -27,8 +39,14 @@ const userSlice = createSlice({
             state.users = action.payload.users;
             state.total = action.payload.total;
         });
+        builder.addCase(fetchUsersAction.rejected, (state, action) => {
+            state.users = [];
+            state.total = 0;
+        });
         builder.addCase(showUserAction.fulfilled, (state, action) => {
             state.user = action.payload.user;
+        });
+        builder.addCase(deleteUserAction.fulfilled, (state, action) => {
         });
     },
 });

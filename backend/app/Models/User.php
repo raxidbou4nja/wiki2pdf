@@ -53,6 +53,17 @@ class User extends Authenticatable
     public function isUser()
     {
         return $this->hasRole('user');
-    }    
+    }
+
+    public function pdfs()
+    {
+        return $this->hasMany(Pdf::class, 'user_id', 'id');
+    }
+
+    // make attribute count pdfs
+    public function getCountPdfsAttribute()
+    {
+        return $this->pdfs->count();
+    }
     
 }

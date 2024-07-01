@@ -50,7 +50,7 @@ class PdfController extends Controller
 
         if ($pdfs->isEmpty()) 
         {
-            return response()->json(['error' => 'No Pdfs Found']);
+            return response()->json(['error' => 'No Pdfs Found'], 404);
         }
 
         return response()->json(

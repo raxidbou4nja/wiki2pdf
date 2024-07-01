@@ -8,6 +8,7 @@ import Subscription from "./subscription/Subscription";
 import PropsRoute from "../../shared/components/PropsRoute";
 import useLocationBlocker from "../../shared/functions/useLocationBlocker";
 import List from "./pdfs/List";
+import UsersList from "./users/List";
 
 const styles = (theme) => ({
   wrapper: {
@@ -66,6 +67,7 @@ function Routing(props) {
     selectSubscription,
     selectPdf,
     openAddBalanceDialog,
+    selectUsers,
   } = props;
   useLocationBlocker();
   return (
@@ -75,6 +77,11 @@ function Routing(props) {
           path="/c/pdf"
           component={List}
           selectPdf={selectPdf}
+        />
+        <PropsRoute
+          path="/c/users"
+          component={UsersList}
+          selectUsers={selectUsers}
         />
         <PropsRoute
           path="/c/posts"
@@ -135,6 +142,7 @@ Routing.propTypes = {
   selectPosts: PropTypes.func.isRequired,
   selectSubscription: PropTypes.func.isRequired,
   selectPdf: PropTypes.func.isRequired,
+  selectUsers: PropTypes.func.isRequired,
   openAddBalanceDialog: PropTypes.func.isRequired,
 };
 

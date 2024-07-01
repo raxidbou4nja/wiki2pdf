@@ -29,19 +29,19 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('wikipedia_handler/{code}', [App\Http\Controllers\Api\PdfController::class, 'wikipediaHandler'])->name('wikipedia_handler');
     });
 
-    // auth/verifyToken sanctum group prefix
     Route::group(['prefix' => 'auth', 'middleware' => 'auth:sanctum'], function () {
-        // Route::get('user', [App\Http\Controllers\Api\AuthController::class, 'user']);
         
         Route::post('logout', [App\Http\Controllers\Api\AuthController::class, 'logout']);
 
-        // dashboard statistics
-        Route::get('dashboard/statistics', [App\Http\Controllers\Api\DashboardController::class, 'statistics']);
+        Route::group(['prefix' => 'admin', 'middleware' => 'auth:sanctum'], function () {
+            Route::get('dashboard/statistics', [App\Http\Controllers\Api\DashboardController::class, 'statistics']);
+            Route::get('users', [App\Http\Controllers\Api\UserController::class, 'index']);
+            Route::get('user', [App\Http\Controllers\Api\UserController::class, 'show']);
+            Route::delete('user/{id}', [App\Http\Controllers\Api\UserController::class, 'destroy']);
+        });
         
-        // pdfs
         Route::group(['prefix' => 'pdf'], function () {
             Route::get('list', [App\Http\Controllers\Api\PdfController::class, 'index']);
-            // Route::get('get/{code}', [App\Http\Controllers\Api\PdfController::class, 'get']);
             Route::delete('delete/{code}', [App\Http\Controllers\Api\PdfController::class, 'destroy']);
         });
 

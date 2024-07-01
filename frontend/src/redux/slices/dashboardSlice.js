@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiEndpointHandler from '../apiEndpointHandler';
 
-export const statisticsAction = createAsyncThunk('auth/dashboard/statistics', async (params) => {
-    const response = await apiEndpointHandler('auth/dashboard/statistics').getItems(params);
+export const statisticsAction = createAsyncThunk('auth/admin/dashboard/statistics', async (params) => {
+    const response = await apiEndpointHandler('auth/admin/dashboard/statistics').getItems(params);
     return response.data;
 });
 

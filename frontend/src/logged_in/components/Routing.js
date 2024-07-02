@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Switch } from "react-router-dom";
 import withStyles from '@mui/styles/withStyles';
 import Dashboard from "./dashboard/Dashboard";
-import Posts from "./posts/Posts";
+import PostsList from "./posts/List";
 import Subscription from "./subscription/Subscription";
 import PropsRoute from "../../shared/components/PropsRoute";
 import useLocationBlocker from "../../shared/functions/useLocationBlocker";
@@ -87,13 +87,8 @@ function Routing(props) {
           pushMessageToSnackbar={pushMessageToSnackbar}
         />
         <PropsRoute
-          path="/c/users"
-          component={UsersList}
-          selectUsers={selectUsers}
-        />
-        <PropsRoute
           path="/c/posts"
-          component={Posts}
+          component={PostsList}
           EmojiTextArea={EmojiTextArea}
           ImageCropper={ImageCropper}
           Dropzone={Dropzone}
@@ -102,6 +97,11 @@ function Routing(props) {
           posts={posts}
           setPosts={setPosts}
           selectPosts={selectPosts}
+        />
+        <PropsRoute
+          path="/c/users"
+          component={UsersList}
+          selectUsers={selectUsers}
         />
         <PropsRoute
           path="/c/subscription"

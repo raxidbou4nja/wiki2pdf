@@ -39,7 +39,14 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('users', [App\Http\Controllers\Api\UserController::class, 'index']);
             Route::get('user', [App\Http\Controllers\Api\UserController::class, 'show']);
             Route::delete('user/{id}', [App\Http\Controllers\Api\UserController::class, 'destroy']);
+
+            Route::get('posts', [App\Http\Controllers\Api\PostController::class, 'index']);
+            Route::get('post', [App\Http\Controllers\Api\PostController::class, 'show']);
+            Route::post('post', [App\Http\Controllers\Api\PostController::class, 'store']);
+            Route::put('post/{id}', [App\Http\Controllers\Api\PostController::class, 'update']);
+            Route::delete('post/{id}', [App\Http\Controllers\Api\PostController::class, 'destroy']);
         });
+        
         
         Route::group(['prefix' => 'pdf'], function () {
             Route::get('list', [App\Http\Controllers\Api\PdfController::class, 'index']);

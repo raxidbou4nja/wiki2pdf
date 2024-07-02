@@ -17,15 +17,11 @@ function MyProfile(props) {
 
   useEffect(() => {
     selectProfile();
-    // Optionally, you can set initial values for name and password here
-    // setName("Initial Name");
-    // setPassword("Initial Password");
   }, [selectProfile]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // check if not empty and call the action
     if (name && password && oldPassword) {
       dispatch(updateProfileAction({ name, new_password: password, old_password: oldPassword }));
     }
@@ -41,8 +37,7 @@ function MyProfile(props) {
         });
       }
     }, 1200);
-  }
-  , [success]);
+  }, [success]);
 
   return (
     <Fragment>

@@ -3,6 +3,7 @@ import authReducer from './slices/authSlice';
 import pdfReducer from './slices/pdfSlice';
 import dashboardReducer from './slices/dashboardSlice';
 import userReducer from './slices/userSlice';
+import postReducer from './slices/postSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     pdf: pdfReducer,
     dashboard: dashboardReducer,
     user: userReducer,
+    post: postReducer,
   },
 });

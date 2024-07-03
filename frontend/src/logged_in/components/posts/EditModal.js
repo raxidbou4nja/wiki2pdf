@@ -16,10 +16,15 @@ import EditIcon from '@mui/icons-material/Edit';
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
+    width: "900px"
   },
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
+  '& .MuiPaper-root' : {
+    width: "900px",
+    maxWidth: "900px !important",
+  }
 }));
 
 export default function EditModal(props) {
@@ -103,7 +108,7 @@ return (
             >
                 <CloseIcon />
             </IconButton>
-            <DialogContent dividers>
+            <DialogContent dividers xs={{ width: "200px" }}>
             <form>
                     <div className="form-group mt-3">
                         <label htmlFor="name">Title:</label>

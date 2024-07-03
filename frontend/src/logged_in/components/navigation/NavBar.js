@@ -35,6 +35,7 @@ import { useDispatch } from "react-redux";
 import { loginAction, logoutAction } from "../../../redux/slices/authSlice";
 import GroupIcon from '@mui/icons-material/Group';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import RssFeedIcon from '@mui/icons-material/RssFeed';
 
 const styles = (theme) => ({
   appBar: {
@@ -188,14 +189,14 @@ function NavBar(props) {
       onClick: closeMobileDrawer,
       icon: {
         desktop: (
-          <ImageIcon
+          <RssFeedIcon
             className={
               selectedTab === "Posts" ? classes.textPrimary : "text-white"
             }
             fontSize="small"
           />
         ),
-        mobile: <ImageIcon className="text-white" />,
+        mobile: <RssFeedIcon className="text-white" />,
       },
       show: store.getState().auth?.roles?.includes("admin")
     },

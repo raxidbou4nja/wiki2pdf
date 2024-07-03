@@ -41,7 +41,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::delete('user/{id}', [App\Http\Controllers\Api\UserController::class, 'destroy']);
 
             Route::get('posts', [App\Http\Controllers\Api\PostController::class, 'index']);
-            Route::get('post', [App\Http\Controllers\Api\PostController::class, 'show']);
+            Route::get('post/{id}', [App\Http\Controllers\Api\PostController::class, 'show']);
             Route::post('post', [App\Http\Controllers\Api\PostController::class, 'store']);
             Route::put('post/{id}', [App\Http\Controllers\Api\PostController::class, 'update']);
             Route::delete('post/{id}', [App\Http\Controllers\Api\PostController::class, 'destroy']);

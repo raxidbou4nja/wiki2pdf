@@ -13,7 +13,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import DownloadIcon from '@mui/icons-material/Download';
 import ConfirmationDialog from "../../../shared/components/ConfirmationDialog";
 import { useLoading } from '../../../shared/components/LoadingContext';
-import EditModal from "./ShowModal";
+import ShowModal from "./ShowModal";
+import EditModal from "./EditModal";
 
 const styles = theme => ({
   tableWrapper: {
@@ -43,9 +44,9 @@ const styles = theme => ({
 
 const rows = [
   {
-    id: "Name",
+    id: "Title",
     numeric: false,
-    label: "Name"
+    label: "Title"
   },
   {
     id: "CreatedAt",
@@ -63,7 +64,7 @@ const rowsPerPage = 5;
 
 function PostTable(props) {
 
-  const { theme, classes } = props;
+  const { theme, classes, pushMessageToSnackbar } = props;
   const dispatch = useDispatch();
   const { posts, loadingPosts, total } = useSelector(state => state.post) || [];
   const { showLoading, hideLoading } = useLoading();
@@ -74,7 +75,6 @@ function PostTable(props) {
   const [deletePostId, setDeletePostId] = useState(null);
 
 
-  const appUrl = process.env.REACT_APP_API_URL;
 
   const onDelete = useCallback((code) => {
     setIsDeletePostDialogOpen(true);
@@ -147,7 +147,8 @@ function PostTable(props) {
                     scope="row"
                     className={classes.firstData}
                   >
-                    <EditModal post={post.id} />
+                    <ShowModal post={post.id}  />
+                    <EditModal post={post.id} pushMessageToSnackbar={pushMessageToSnackbar} />
                     <IconButton onClick={() => onDelete(post.id)}>
                       <DeleteIcon />
                     </IconButton>

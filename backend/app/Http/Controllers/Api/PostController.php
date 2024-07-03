@@ -26,7 +26,7 @@ class PostController extends Controller
 
         $total = $posts->count();
 
-        $posts = $posts->orderBy('id', 'desc')->offset($offset)->limit($limit)->get();
+        $posts = $posts->orderBy('id', 'desc')->offset($offset)->limit($limit)->select('id', 'title', 'created_at')->get();
 
         if ($posts->isEmpty()) 
         {
@@ -48,7 +48,7 @@ class PostController extends Controller
         $post = Post::find($request->id);
         
         return response()->json([
-            'post' => $post
+            'post' => new PostResource($post)
         ]);
     }
 

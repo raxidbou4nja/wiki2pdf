@@ -9,9 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
-import { showUserAction } from '../../../redux/slices/userSlice';
+import { showPostAction, editPostAction } from '../../../redux/slices/postSlice';
 import { useDispatch } from 'react-redux';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -25,21 +25,52 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 export default function EditModal(props) {
     const dispatch = useDispatch();
 
-    const { user } = props;
+    const { post, pushMessageToSnackbar } = props;
 
     const [open, setOpen] = React.useState(false);
+    const [content, setContent] = React.useState('');
+    const [title, setTitle] = React.useState('');
 
-    const userData = useSelector((state) => state.user.user);
            
-            
 
-
-    const submitSections = () => {
+    const submitSections = async () => {
         setOpen(false);
+
+        if (!title || !content) {
+            setTimeout(() => {
+                pushMessageToSnackbar({
+                isErrorMessage: true,
+                text: "Required Input is Empty",
+                });
+            }, 1200);
+            return;
+            
+        }
+
+        const data = {
+            title: title,
+            content: content,
+        };
+
+
+        const response = await dispatch(editPostAction({data, id: post})).unwrap();
+        if (response.message)
+            {
+            setTimeout(() => {
+                    pushMessageToSnackbar({
+                    isErrorMessage: false,
+                    text: "Post Edited successfully",
+                    });
+                }, 1200);
+            }
     };
 
-    const handleClickOpen = () => {
-        dispatch(showUserAction({ id: user }));
+    const handleClickOpen = async () => {
+        const postResponse = await dispatch(showPostAction(post)).unwrap();
+        if (postResponse.post.title) {
+                setTitle(postResponse.post.title);
+                setContent(postResponse.post.content);
+            }
         setOpen(true);
     };
 
@@ -50,7 +81,7 @@ export default function EditModal(props) {
 return (
     <React.Fragment>
         <IconButton variant="outlined" onClick={handleClickOpen}>
-            <VisibilityIcon />
+            <EditIcon />
         </IconButton>
         <BootstrapDialog
             onClose={handleClose}
@@ -58,7 +89,7 @@ return (
             open={open}
         >
             <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                User Data
+                Edit Post { post }
             </DialogTitle>
             <IconButton
                 aria-label="close"
@@ -73,49 +104,33 @@ return (
                 <CloseIcon />
             </IconButton>
             <DialogContent dividers>
-                <form>
-                    <div class="text-center">
-                        <img
-                            src={`https://ui-avatars.com/api/?name=${userData.name}&color=FFFFFF&background=09090b`}
-                            alt="User"
-                            className="rounded-circle"
-                            style={{ width: '150px', height: '150px' }}
-                        />
-                    </div>
-
+            <form>
                     <div className="form-group mt-3">
-                        <label htmlFor="name">Name:</label>
+                        <label htmlFor="name">Title:</label>
                         <input
+                            onChange={(e) => setTitle(e.target.value)}
                             type="text"
-                            id="name"
+                            id="title"
                             className="form-control"
-                            value={userData.name}
-                            readOnly
+                            value={title}
                         />
                     </div>
                     <div className="form-group mt-3">
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
+                        <label htmlFor="content">Content:</label>
+                        <textarea
+                            onChange={(e) => setContent(e.target.value)}
+                            id="content"
                             className="form-control"
-                            value={userData.email}
-                            readOnly
+                            value={content}
                         />
                     </div>
-                    <div className="form-group mt-3">
-                        <label htmlFor="email">Registred at:</label>
-                        <input
-                            type="text"
-                            id="text"
-                            className="form-control"
-                            value={userData.created_at}
-                            readOnly
-                    />
-                    </div>
+                    
                 </form>
                 </DialogContent>
             <DialogActions>
+                <Button autoFocus onClick={submitSections}>
+                    Save changes
+                </Button>
                 <Button autoFocus onClick={handleClose}>
                     Close
                 </Button>

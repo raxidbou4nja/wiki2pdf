@@ -9,9 +9,10 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
-import { showPostAction } from '../../../redux/slices/postSlice';
+import { createPostAction } from '../../../redux/slices/postSlice';
 import { useDispatch } from 'react-redux';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import { useRef } from 'react';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -22,24 +23,41 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function ShowModal(props) {
+export default function CreateModal(props) {
     const dispatch = useDispatch();
 
-    const { post } = props;
+    const { post, pushMessageToSnackbar } = props;
 
     const [open, setOpen] = React.useState(false);
+    const contentRef = useRef();
+    const titleRef = useRef();
 
-    const postData = useSelector((state) => state.post.post);
-           
-            
-
-
-    const submitSections = () => {
+    const submitSections = async () => {
         setOpen(false);
+
+        if (!titleRef.current.value || !contentRef.current.value) {
+            return;
+        }
+
+        const data = {
+            title: titleRef.current.value,
+            content: contentRef.current.value,
+        };
+
+
+        const response = await dispatch(createPostAction(data)).unwrap();
+        if (response.message)
+            {
+            setTimeout(() => {
+                    pushMessageToSnackbar({
+                    isErrorMessage: false,
+                    text: "Post Created successfully",
+                    });
+                }, 1200);
+            }
     };
 
     const handleClickOpen = () => {
-        dispatch(showPostAction(post));
         setOpen(true);
     };
 
@@ -49,16 +67,16 @@ export default function ShowModal(props) {
 
 return (
     <React.Fragment>
-        <IconButton variant="outlined" onClick={handleClickOpen}>
-            <VisibilityIcon />
-        </IconButton>
+        <Button variant="outlined" onClick={handleClickOpen}>
+            <AddBoxIcon /> ADD Post
+        </Button>
         <BootstrapDialog
             onClose={handleClose}
             aria-labelledby="customized-dialog-title"
             open={open}
         >
             <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                Post Data
+                Create Blog Post
             </DialogTitle>
             <IconButton
                 aria-label="close"
@@ -73,30 +91,31 @@ return (
                 <CloseIcon />
             </IconButton>
             <DialogContent dividers>
-                <form>
+            <form>
                     <div className="form-group mt-3">
                         <label htmlFor="name">Title:</label>
                         <input
+                            ref={titleRef}
                             type="text"
                             id="title"
                             className="form-control"
-                            value={postData.title}
-                            readOnly
                         />
                     </div>
                     <div className="form-group mt-3">
                         <label htmlFor="content">Content:</label>
                         <textarea
+                            ref={contentRef}
                             id="content"
                             className="form-control"
-                            value={postData.content}
-                            readOnly
                         />
                     </div>
-
+                    
                 </form>
                 </DialogContent>
             <DialogActions>
+                <Button autoFocus onClick={submitSections}>
+                    Save changes
+                </Button>
                 <Button autoFocus onClick={handleClose}>
                     Close
                 </Button>

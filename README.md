@@ -154,6 +154,3 @@ Contributions are welcome! Please follow these steps to contribute:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-
-This version includes detailed steps for setting up and running both the backend and frontend parts of the project. Adjust the paths, environment variables, and other details according to your specific setup and requirements.

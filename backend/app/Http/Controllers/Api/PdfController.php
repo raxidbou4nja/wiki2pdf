@@ -181,6 +181,7 @@ class PdfController extends Controller
         $pdf->userid = $user->id ?? null;
         $pdf->ip = request()->ip();
         $pdf->url = $url;
+        $pdf->theme = 1;
         $pdf->title = $request->title;
         $pdf->lang = $request->lang;
         $pdf->code = $request->pageId . now()->timestamp;

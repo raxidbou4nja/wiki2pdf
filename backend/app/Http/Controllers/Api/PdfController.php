@@ -16,6 +16,12 @@ use App\Http\Resources\PdfResource;
 class PdfController extends Controller
 {
 
+    /**
+     * PdfController constructor.
+     *
+     * This constructor is called when a new instance of the PdfController class is created.
+     * It is used to initialize any necessary dependencies or perform any setup tasks.
+     */
     public function __construct()
     {
         $this->wk_binary = "C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf";
@@ -64,46 +70,6 @@ class PdfController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(cr $cr)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(cr $cr)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, cr $cr)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request)
@@ -123,7 +89,13 @@ class PdfController extends Controller
 
     }
 
-    // checkUrl
+
+    /**
+     * Check the URL provided in the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function checkUrl(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -178,6 +150,12 @@ class PdfController extends Controller
     }
 
 
+    /**
+     * Get the editor for PDF generation.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function getEditor(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -241,6 +219,12 @@ class PdfController extends Controller
     }
 
 
+    /**
+     * Generate a PDF based on the given request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function generatePdf(Request $request)
     {
 
@@ -294,6 +278,12 @@ class PdfController extends Controller
         ]);
     }
 
+    /**
+     * Handles the Wikipedia API request for a given code.
+     *
+     * @param string $code The code to be used for the Wikipedia API request.
+     * @return Response The response from the Wikipedia API.
+     */
     public function wikipediaHandler($code)
     {
         if (!isset($code) OR !is_numeric($code)) 
@@ -492,6 +482,13 @@ class PdfController extends Controller
 
 
 
+    /**
+     * Download a PDF file.
+     *
+     * @param string $code The code of the PDF file.
+     * @param int $timestamp The timestamp of the PDF file.
+     * @return \Illuminate\Http\Response
+     */
     public function downloadPdf($code, $timestamp)
     {
         if (!is_numeric($timestamp))
@@ -515,6 +512,8 @@ class PdfController extends Controller
         $this->wikipediaHandler($pdf->code);
         $html = ob_get_clean();
 
+        return $html;
+
         $options =  array();
         $options[0] = 'disable-smart-shrinking';
         $options['page-size'] = 'A4';
@@ -535,6 +534,13 @@ class PdfController extends Controller
     }
 
 
+    /**
+     * Preview a PDF.
+     *
+     * @param string $code The code of the PDF.
+     * @param int $timestamp The timestamp of the PDF.
+     * @return void
+     */
     public function previewPdf($code, $timestamp)
     {
         if (!is_numeric($timestamp))

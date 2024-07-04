@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
+    /**
+     * Handle the statistics request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function statistics(Request $request)
     {
         $groupBy = $request->input('group_by', 'day');

@@ -9,6 +9,12 @@ use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         $page = $request->page ?? 1;
@@ -43,6 +49,12 @@ class UserController extends Controller
     }
 
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function show(Request $request)
     {
         $user = User::find($request->id);
@@ -52,6 +64,12 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Destroy a user.
+     *
+     * @param int $id The ID of the user to be destroyed.
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
         $user = User::find($id);

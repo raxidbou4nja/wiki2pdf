@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\Mail;
 class OtherController extends Controller
 {
 
+    /**
+     * Send an email.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function sendEmail(Request $request)
     {
         $request->validate([

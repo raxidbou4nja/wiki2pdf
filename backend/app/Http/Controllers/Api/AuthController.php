@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -42,6 +48,12 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Register a new user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(Request $request)
     {
         $validation = Validator::make($request->all(), [
@@ -74,6 +86,12 @@ class AuthController extends Controller
         ], 200);
     }
 
+    /**
+     * Verify the token sent in the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function verifyToken(Request $request)
     {
         return response([
@@ -84,6 +102,12 @@ class AuthController extends Controller
         ], 200);
     }
 
+    /**
+     * Logout the authenticated user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -92,7 +116,12 @@ class AuthController extends Controller
         ], 200);
     }
 
-    // update name and password if old password is correct
+    /**
+     * Update the user's profile.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateProfile(Request $request)
     {
         $validation = Validator::make($request->all(), [

@@ -116,7 +116,7 @@ This project is a web application that uses React for the frontend and Laravel f
 3. Create a `.env` file in the `frontend` directory and configure the environment variables. Here is an example:
 
    ```env
-   REACT_APP_API_URL=http://localhost:8000/api
+   REACT_APP_API_URL=http://localhost:8000/api/v1
    ```
 
 ## Running the Application

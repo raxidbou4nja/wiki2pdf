@@ -32,7 +32,6 @@ export function ConverterForm() {
           placeholder="Ex: https://wikipedia.org/w/Morocco"
           inputProps={{ 'aria-label': 'wikipedia url' }}
           inputRef={inputRef}
-          value='https://en.wikipedia.org/wiki/Iberian_lynx'
         />
         <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
         <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleConvert} >

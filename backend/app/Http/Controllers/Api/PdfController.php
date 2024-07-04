@@ -122,7 +122,7 @@ class PdfController extends Controller
 
         if ($content === false) 
         {
-            return response()->json(['error' => 'YOU HAVE An ERROR']);
+            return response()->json(['error' => 'An Error Occurred, Please Try Again']);
         }
 
         $json_content = json_decode($content);
@@ -511,8 +511,6 @@ class PdfController extends Controller
         ob_start();
         $this->wikipediaHandler($pdf->code);
         $html = ob_get_clean();
-
-        return $html;
 
         $options =  array();
         $options[0] = 'disable-smart-shrinking';

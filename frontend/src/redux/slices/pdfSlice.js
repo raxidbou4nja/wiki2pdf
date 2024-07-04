@@ -5,13 +5,11 @@ import { store } from '../store';
 
 export const checkUrlAction = createAsyncThunk('pdf/checkUrl', async (params) => {
     const response = await apiEndpointHandler('pdf/check-url').createItem(params);
-    console.log(response.data);
     return response.data;
 });
 
 export const getEditorAction = createAsyncThunk('pdf/getEditor', async (params) => {
     const response = await apiEndpointHandler('pdf/get-editor').createItem(params);
-    console.log(response.data);
     return response.data;
 });
 
@@ -21,14 +19,12 @@ export const generatePdfAction = createAsyncThunk('pdf/generatePdf', async () =>
     const { lang, theme, links, images, code, sections, infobox, pagination, showInfobox , showPagination ,showToc } = state.pdf;
 
     const response = await apiEndpointHandler('pdf/generate-pdf').createItem({ lang, theme, links, images, code, sections, infobox, pagination, showInfobox, showPagination, showToc });
-    console.log(response.data);
     return response.data;
 });
 
 
 export const listPdfsAction = createAsyncThunk('auth/pdf/list', async (params) => {
     const response = await apiEndpointHandler('auth/pdf/list').getItems(params);
-    console.log(response.data);
     return response.data;
 });
 
@@ -107,6 +103,7 @@ const pdfSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(checkUrlAction.fulfilled, (state, action) => {
+            Object.assign(state, initialState);
             if (action.payload.error){
                 state.showResultPage = false;
                 state.error = action.payload.error;

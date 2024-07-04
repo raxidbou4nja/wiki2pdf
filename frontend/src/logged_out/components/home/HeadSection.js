@@ -135,7 +135,7 @@ function HeadSection(props) {
                     </div>
                 </div>
                 <div className="col-md-6 p-5">
-                    <img src="https://themesdesign.in/heroxa/layouts/images/user-3/home.png" className="img-fluid" alt="img" />
+                    <img src="./images/logged_out/hero.png" className="img-fluid" alt="img" />
                 </div>
               </div>
 

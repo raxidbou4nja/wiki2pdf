@@ -24,7 +24,7 @@ class PdfController extends Controller
      */
     public function __construct()
     {
-        $this->wk_binary = "C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf";
+        $this->wk_binary = "/usr/local/bin/wkhtmltopdf";
     }
 
 
@@ -364,13 +364,16 @@ class PdfController extends Controller
 
 
         if ($pdf->images == '1') 
-        {
+        {            
             $source_html = preg_replace('/data-src="\/\/(.*?)"/','> <img src="https://$1" class="thumbimage image-lazy-loaded"></span><span class="displaynone" ',$source_html);
             $source_html = str_ireplace('src="/api', 'src="https://en.wikipedia.org/api', $source_html);
         }
         else
         {
-            $source_html = preg_replace('/<img[^>]*>/','<span $1></span>',$source_html);
+            foreach ($source_html->find('.thumbimage') as $tag)
+            {
+                $tag->outertext = '';
+            }
         }
 
         $source_html = str_ireplace('href="/wiki/', 'href="https://'.$pdf->lang.'.wikipedia.org/wiki/', $source_html);
@@ -464,7 +467,7 @@ class PdfController extends Controller
 
             $theme_css = Theme::find($pdf->theme);
 
-            echo   '<!DOCTYPE html>
+            $html_source =   '<!DOCTYPE html>
                         <html>
                         <head>
                         <meta charset="utf8">
@@ -475,8 +478,9 @@ class PdfController extends Controller
                         <title>'.$pdf->title.'</title>
                         </head>
                     ';
-            echo   $source_html;
-            echo   '</html>';
+            $html_source .=  $source_html;
+            $html_source .=   '</html>';
+    		return $html_source;
 
     }
 
@@ -509,9 +513,9 @@ class PdfController extends Controller
 
         $title = $pdf->title .' - ' . config("app.name");
         
-        ob_start();
-        $this->wikipediaHandler($pdf->code);
-        $html = ob_get_clean();
+        // ob_start();
+        // $this->wikipediaHandler($pdf->code);
+        // $html = ob_get_clean();
 
         $options =  array();
         $options[0] = 'disable-smart-shrinking';
@@ -523,7 +527,7 @@ class PdfController extends Controller
         }
 
         $converter = new converter($options);
-        $converter->addPage($html);
+        $converter->addPage(route('wikipedia_handler', $pdf->code));
         $converter->binary = $this->wk_binary;
 
 
@@ -558,11 +562,7 @@ class PdfController extends Controller
         $pdf = $pdf[0];
 
         $title = $pdf->title .' - ' . config("app.name");
-        
-        ob_start();
-        $this->wikipediaHandler($pdf->code);
-        $html = ob_get_clean();
-
+            
         $options =  array();
         $options[0] = 'disable-smart-shrinking';
         $options['page-size'] = 'A4';
@@ -573,7 +573,7 @@ class PdfController extends Controller
         }
 
         $converter = new converter($options);
-        $converter->addPage($html);
+        $converter->addPage(route('wikipedia_handler', $pdf->code));
         $converter->binary = $this->wk_binary;
 
 

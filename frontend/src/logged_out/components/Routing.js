@@ -6,10 +6,38 @@ import Home from "./home/Home";
 import Blog from "./blog/Blog";
 import BlogPost from "./blog/BlogPost";
 import useLocationBlocker from "../../shared/functions/useLocationBlocker";
+import { useDispatch  } from "react-redux";
+import { fetchBlogPostsAction } from "../../redux/slices/postSlice";
 
 function Routing(props) {
-  const { blogPosts, selectBlog, selectHome } = props;
+  const { selectBlog, selectHome } = props;
   useLocationBlocker();
+
+
+  const [blogPosts, setBlogPosts] = React.useState([]);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(fetchBlogPostsAction()).unwrap().then((response) => {
+     const posts =  response.posts.map((blogPost) => {
+        let title = blogPost.title;
+        console.log(title);
+        title = title.toLowerCase();
+        /* Remove unwanted characters, only accept alphanumeric and space */
+        title = title.replace(/[^A-Za-z0-9 ]/g, "");
+        /* Replace multi spaces with a single space */
+        title = title.replace(/\s{2,}/g, " ");
+        /* Replace space with a '-' symbol */
+        title = title.replace(/\s/g, "-");
+        blogPost = { ...blogPost, url: `/blog/post/${title}` };
+        blogPost.params = `?id=${blogPost.id}`;
+        return blogPost;
+      });
+      setBlogPosts(posts);
+    }); 
+  }, [dispatch]);
+
+
   return (
     <Switch>
       {blogPosts.map((post) => (

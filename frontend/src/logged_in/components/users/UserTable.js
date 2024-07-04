@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, IconButton, Table, TableBody, TableCell, TablePagination, TableRow } from "@mui/material";
+import { Button, IconButton, Table, TableBody, TableCell, TablePagination, TableRow, Avatar } from "@mui/material";
 import withStyles from '@mui/styles/withStyles';
 import EnhancedTableHead from "../../../shared/components/EnhancedTableHead";
 import HighlightedInformation from "../../../shared/components/HighlightedInformation";
@@ -42,6 +42,12 @@ const styles = theme => ({
 });
 
 const rows = [
+  {
+    id: "Image",
+    numeric: false,
+    label: "Image"
+  }
+  ,
   {
     id: "Name",
     numeric: false,
@@ -128,6 +134,16 @@ function UserTable(props) {
             {users
               .map((user, index) => (
                 <TableRow hover tabIndex={-1} key={index}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    className={classes.firstData}
+                  >
+                    <Avatar
+                      className={classes.avatar}
+                      src={`https://ui-avatars.com/api/?name=${user.name}&color=FFFFFF&background=09090b`}
+                    />
+                  </TableCell>
                   <TableCell
                     component="th"
                     scope="row"

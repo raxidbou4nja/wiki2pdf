@@ -15,7 +15,7 @@ const apiEndpointHandler = (endpoint) => {
   return {
     getItems: (params) => axiosInstance.get(`/${endpoint}`, { params }),
     getItemById: (id) => axiosInstance.get(`/${endpoint}/${id}`),
-    createItem: (item) => axiosInstance.post(`/${endpoint}`, item),
+    createItem: (item) => axiosInstance.post(`/${endpoint}`, item, { headers: { 'Content-Type': 'multipart/form-data' } }),
     updateItem: (item, id) => axiosInstance.put(`/${endpoint}/${id}`, item),
     deleteItem: (itemId) => axiosInstance.delete(`/${endpoint}/${itemId}`),
     deleteSelectedItems: (itemIds) => {

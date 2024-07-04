@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-// validator
+use Spatie\Permission\Models\Role;
+
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -59,6 +60,10 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password)
         ]);
+
+        $role = Role::where('name', 'user')->first();
+        $user->assignRole($role);
+
 
         $token = $user->createToken('token')->plainTextToken;
 

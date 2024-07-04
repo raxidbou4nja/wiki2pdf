@@ -71,7 +71,7 @@ function RegisterDialog(props) {
         }
       else
         {
-          window.location.href = "/c/dashboard";
+          window.location.href = "/c/pdf";
         }
       
       
@@ -237,16 +237,6 @@ function RegisterDialog(props) {
               In order to create an account, you have to accept our terms of
               service.
             </FormHelperText>
-          )}
-          {status === "accountCreated" ? (
-            <HighlightedInformation>
-              We have created your account. Please click on the link in the
-              email we have sent to you before logging in.
-            </HighlightedInformation>
-          ) : (
-            <HighlightedInformation>
-              Registration is disabled until we go live.
-            </HighlightedInformation>
           )}
         </Fragment>
       }

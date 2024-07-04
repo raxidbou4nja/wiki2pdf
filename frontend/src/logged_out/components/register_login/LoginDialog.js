@@ -148,18 +148,6 @@ function LoginDialog(props) {
               control={<Checkbox color="primary" />}
               label={<Typography variant="body1">Remember me</Typography>}
             />
-            {status === "verificationEmailSend" ? (
-              <HighlightedInformation>
-                We have send instructions on how to reset your password to your
-                email address
-              </HighlightedInformation>
-            ) : (
-              <HighlightedInformation>
-                Email is: <b>test@web.com</b>
-                <br />
-                Password is: <b>HaRzwc</b>
-              </HighlightedInformation>
-            )}
           </Fragment>
         }
         actions={

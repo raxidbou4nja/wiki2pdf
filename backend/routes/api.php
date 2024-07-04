@@ -20,6 +20,11 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('auth/login', [App\Http\Controllers\Api\AuthController::class, 'login']);
     Route::post('auth/register', [App\Http\Controllers\Api\AuthController::class, 'register']);
 
+    Route::get('posts', [App\Http\Controllers\Api\PostController::class, 'index']);
+    Route::get('post/{id}', [App\Http\Controllers\Api\PostController::class, 'show']);
+
+    Route::post('send-message', [App\Http\Controllers\Api\OtherController::class, 'sendEmail']);
+
     Route::group(['prefix' => 'pdf'], function () {
         Route::post('check-url', [App\Http\Controllers\Api\PdfController::class, 'checkUrl']);
         Route::post('get-editor', [App\Http\Controllers\Api\PdfController::class, 'getEditor']);
@@ -43,7 +48,7 @@ Route::group(['prefix' => 'v1'], function () {
             Route::get('posts', [App\Http\Controllers\Api\PostController::class, 'index']);
             Route::get('post/{id}', [App\Http\Controllers\Api\PostController::class, 'show']);
             Route::post('post', [App\Http\Controllers\Api\PostController::class, 'store']);
-            Route::put('post/{id}', [App\Http\Controllers\Api\PostController::class, 'update']);
+            Route::post('edit-post', [App\Http\Controllers\Api\PostController::class, 'update']);
             Route::delete('post/{id}', [App\Http\Controllers\Api\PostController::class, 'destroy']);
         });
         

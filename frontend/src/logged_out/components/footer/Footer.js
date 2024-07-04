@@ -14,6 +14,8 @@ import MailIcon from "@mui/icons-material/Mail";
 import WaveBorder from "../../../shared/components/WaveBorder";
 import ColoredButton from "../../../shared/components/ColoredButton";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { sendMessageAction } from "../../../redux/slices/otherSlice";
+import { useDispatch } from "react-redux";
 
 const styles = (theme) => ({
   footerInner: {
@@ -75,12 +77,8 @@ const styles = (theme) => ({
 
 const infos = [
   {
-    icon: <PhoneIcon />,
-    description: "+1 555 123456",
-  },
-  {
     icon: <MailIcon />,
-    description: "support@company.com",
+    description: "support@wiki2pdf.rb4.tech",
   },
 ];
 
@@ -154,6 +152,20 @@ const socialIcons = [
 function Footer(props) {
   const { classes, theme } = props;
   const isWidthUpMd = useMediaQuery(theme.breakpoints.up("md"));
+  const dispatch = useDispatch();
+  const [message, setMessage] = React.useState("");
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!message) return alert("Please enter a message");
+   const response = await dispatch(sendMessageAction({ message: message })).unwrap();
+   
+   if (response.message) {
+     alert("Message sent successfully");
+     setMessage("");
+   }
+
+  }
 
   return (
     <footer className="lg-p-top">
@@ -179,12 +191,15 @@ function Footer(props) {
                     rows={4}
                     fullWidth
                     required
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   />
                 </Box>
                 <ColoredButton
                   color={theme.palette.common.white}
                   variant="outlined"
                   type="submit"
+                  onClick={handleSendMessage}
                 >
                   Send Message
                 </ColoredButton>
@@ -224,11 +239,14 @@ function Footer(props) {
           </Hidden>
           <Grid item xs={12} md={6} lg={4}>
             <Typography variant="h6" paragraph className="text-white">
-              About the Company
+              About Wiki2PDF
             </Typography>
             <Typography style={{ color: "#8f9296" }} paragraph>
-              Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce
-              euismod convallis velit, eu auctor lacus vehicula sit amet.
+            Welcome to WikiPDF, the ideal solution for converting Wikipedia pages into high-quality PDFs.
+            Our platform lets you easily transform Wikipedia content into customizable, offline documents.
+            Perfect for students, researchers, and enthusiasts, WikiPDF offers batch processing, cross-platform compatibility,
+            and secure downloads. Enhance your reading and learning experience by making Wikipedia knowledge portable and convenient.
+            Join us and revolutionize how you access information!
             </Typography>
             <Box display="flex">
               {socialIcons.map((socialIcon, index) => (

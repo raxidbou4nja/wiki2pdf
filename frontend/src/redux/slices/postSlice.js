@@ -13,7 +13,7 @@ export const showPostAction = createAsyncThunk('auth/admin/showPost', async (id)
 });
 
 export const editPostAction = createAsyncThunk('auth/admin/editPost', async (params, { dispatch, getState }) => {
-    const response = await apiEndpointHandler('auth/admin/post').updateItem(params.data, params.id);
+    const response = await apiEndpointHandler('auth/admin/edit-post').createItem(params);
 
     if (!response.data.error) {
         await dispatch(fetchPostsAction());
@@ -44,10 +44,24 @@ export const deletePostAction = createAsyncThunk('auth/admin/deletePost', async 
     return response.data;
 });
 
+
+// fatchData 
+export const fetchBlogPostsAction = createAsyncThunk('fetchPosts', async (params) => {
+    const response = await apiEndpointHandler('posts').getItems(params);
+    return response.data;
+});
+
+export const fetchBlogPostAction = createAsyncThunk('fetchPost', async (id) => {
+    const response = await apiEndpointHandler('post').getItemById(id);
+    return response.data;
+});
+
+
 const initialState = {
     posts: [],
     total: 0,
     post: {},
+    loadingPosts: true,
 };
 
 const postSlice = createSlice({
@@ -58,6 +72,7 @@ const postSlice = createSlice({
         builder.addCase(fetchPostsAction.fulfilled, (state, action) => {
             state.posts = action.payload.posts;
             state.total = action.payload.total;
+            state.loadingPosts = false;
         });
         builder.addCase(fetchPostsAction.rejected, (state, action) => {
             state.posts = [];
@@ -71,6 +86,17 @@ const postSlice = createSlice({
         });
         builder.addCase(deletePostAction.fulfilled, (state, action) => {
         });
+
+        builder.addCase(fetchBlogPostsAction.fulfilled, (state, action) => {
+            state.posts = action.payload.posts;
+            state.total = action.payload.total;
+            state.loadingPosts = false;
+        });
+
+        builder.addCase(fetchBlogPostAction.fulfilled, (state, action) => {
+            state.post = action.payload.post;
+        });
+
     },
 });
 

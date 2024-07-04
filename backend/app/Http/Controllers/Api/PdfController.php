@@ -243,14 +243,15 @@ class PdfController extends Controller
 
     public function generatePdf(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'code'          => 'required|numeric',
             'theme'         => 'required|numeric|min:1',
-            'links'         => 'required|boolean',
-            'images'         => 'required|boolean',
-            'showInfobox'       => 'required|boolean',
-            'showPagination'    => 'required|boolean',
-            'showToc'           => 'required|boolean',
+            'links'         => 'required',
+            'images'         => 'required',
+            'showInfobox'       => 'required',
+            'showPagination'    => 'required',
+            'showToc'           => 'required',
         ]);
 
         if (!$validator->passes()) 
@@ -264,7 +265,7 @@ class PdfController extends Controller
             $sections = $request->sections;
         } 
         else {
-            $sections = json_decode($request->sections);
+            $sections = [];
         }
 
 
@@ -276,12 +277,12 @@ class PdfController extends Controller
         }
 
         $pdf->theme = $request->theme;
-        $pdf->links = $request->links;
-        $pdf->images = $request->images;
+        $pdf->links = $request->links ? 1 : 0;
+        $pdf->images = $request->images ? 1 : 0;
         $pdf->sections = $sections;
-        $pdf->infobox = $request->showInfobox;
-        $pdf->pagination = $request->showPagination;
-        $pdf->toc = $request->showToc;
+        $pdf->infobox = $request->showInfobox ? 1 : 0;
+        $pdf->pagination = $request->showPagination ? 1 : 0;
+        $pdf->toc = $request->showToc ? 1 : 0;
         
         $pdf->save();
 

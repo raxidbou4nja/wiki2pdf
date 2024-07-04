@@ -32,7 +32,7 @@ function Dashboard(props) {
         isAccountActivated={isAccountActivated}
         toggleAccountActivation={toggleAccountActivation}
       />
-      <Box mt={4}>
+      {/* <Box mt={4}>
         <Typography variant="subtitle1" gutterBottom>
           Settings
         </Typography>
@@ -42,7 +42,7 @@ function Dashboard(props) {
         pushMessageToSnackbar={pushMessageToSnackbar}
         targets={targets}
         setTargets={setTargets}
-      />
+      /> */}
     </Fragment>
   );
 }

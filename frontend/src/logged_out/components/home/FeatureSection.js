@@ -1,94 +1,103 @@
 import React from "react";
 import { Grid, Typography } from "@mui/material";
-import CodeIcon from "@mui/icons-material/Code";
-import BuildIcon from "@mui/icons-material/Build";
-import ComputerIcon from "@mui/icons-material/Computer";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import HeadsetMicIcon from "@mui/icons-material/HeadsetMic";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import CloudIcon from "@mui/icons-material/Cloud";
-import MeassageIcon from "@mui/icons-material/Message";
-import CancelIcon from "@mui/icons-material/Cancel";
 import calculateSpacing from "./calculateSpacing";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { withTheme } from "@mui/styles";
 import FeatureCard from "./FeatureCard";
 import useWidth from "../../../shared/functions/useWidth";
+import CreateIcon from '@mui/icons-material/Create';
+import SettingsIcon from '@mui/icons-material/Settings';
+import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import DevicesIcon from '@mui/icons-material/Devices';
+import SecurityIcon from '@mui/icons-material/Security';
+import ApiIcon from '@mui/icons-material/Code';
+import UpdateIcon from '@mui/icons-material/Update';
+import LiveHelpIcon from '@mui/icons-material/LiveHelp';
 
-const iconSize = 30;
+const iconSize = 48; // Adjust the icon size as needed
 
 const features = [
   {
     color: "#00C853",
-    headline: "Feature 1",
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <BuildIcon style={{ fontSize: iconSize }} />,
+    headline: "Easy Conversion",
+    text: "Convert any Wikipedia page to a downloadable PDF with just a few clicks.",
+    icon: <CreateIcon style={{ fontSize: iconSize }} />,
     mdDelay: "0",
     smDelay: "0",
   },
   {
     color: "#6200EA",
-    headline: "Feature 2",
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <CalendarTodayIcon style={{ fontSize: iconSize }} />,
+    headline: "Customizable Output",
+    text: "Choose the sections and formatting options you want in your PDF.",
+    icon: <SettingsIcon style={{ fontSize: iconSize }} />,
     mdDelay: "200",
     smDelay: "200",
   },
   {
     color: "#0091EA",
-    headline: "Feature 3",
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <MeassageIcon style={{ fontSize: iconSize }} />,
+    headline: "High-Quality PDFs",
+    text: "Ensure professional-looking PDFs with accurate formatting and images.",
+    icon: <PictureAsPdfIcon style={{ fontSize: iconSize }} />,
     mdDelay: "400",
     smDelay: "0",
   },
   {
     color: "#d50000",
-    headline: "Feature 4",
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <ComputerIcon style={{ fontSize: iconSize }} />,
+    headline: "Offline Access",
+    text: "Download PDFs for offline reading and reference.",
+    icon: <CloudDownloadIcon style={{ fontSize: iconSize }} />,
     mdDelay: "0",
     smDelay: "200",
   },
   {
     color: "#DD2C00",
-    headline: "Feature 5",
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <BarChartIcon style={{ fontSize: iconSize }} />,
+    headline: "Batch Processing",
+    text: "Convert multiple Wikipedia pages to PDFs in one go.",
+    icon: <PlaylistAddCheckIcon style={{ fontSize: iconSize }} />,
     mdDelay: "200",
     smDelay: "0",
   },
   {
     color: "#64DD17",
-    headline: "Feature 6",
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <HeadsetMicIcon style={{ fontSize: iconSize }} />,
+    headline: "Cross-Platform Compatibility",
+    text: "Access and download PDFs from any device or browser.",
+    icon: <DevicesIcon style={{ fontSize: iconSize }} />,
     mdDelay: "400",
     smDelay: "200",
   },
   {
     color: "#304FFE",
-    headline: "Feature 7",
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <CloudIcon style={{ fontSize: iconSize }} />,
+    headline: "Secure and Private",
+    text: "Your data and downloads are kept secure and private.",
+    icon: <SecurityIcon style={{ fontSize: iconSize }} />,
     mdDelay: "0",
     smDelay: "0",
   },
   {
     color: "#C51162",
-    headline: "Feature 8",
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <CodeIcon style={{ fontSize: iconSize }} />,
+    headline: "API Access",
+    text: "Integrate Wikipedia to PDF conversion into your own applications or workflows.",
+    icon: <ApiIcon style={{ fontSize: iconSize }} />,
     mdDelay: "200",
     smDelay: "200",
   },
   {
     color: "#00B8D4",
-    headline: "Feature 9",
-    text: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et.",
-    icon: <CancelIcon style={{ fontSize: iconSize }} />,
+    headline: "Regular Updates",
+    text: "Stay updated with the latest Wikipedia format changes and improvements.",
+    icon: <UpdateIcon style={{ fontSize: iconSize }} />,
     mdDelay: "400",
     smDelay: "0",
+  },
+  {
+    color: "#FF6D00",
+    headline: "Customer Support",
+    text: "Access responsive customer support for any questions or issues.",
+    icon: <LiveHelpIcon style={{ fontSize: iconSize }} />,
+    mdDelay: "0",
+    smDelay: "200",
   },
 ];
 

@@ -13,6 +13,10 @@ import { createPostAction } from '../../../redux/slices/postSlice';
 import { useDispatch } from 'react-redux';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { useRef } from 'react';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import EditIcon from '@mui/icons-material/Edit';
+import JoditEditor from 'jodit-react';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -21,6 +25,10 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
+  '& .MuiPaper-root' : {
+    width: "900px",
+    maxWidth: "900px !important",
+  }
 }));
 
 export default function CreateModal(props) {
@@ -28,33 +36,54 @@ export default function CreateModal(props) {
 
     const { post, pushMessageToSnackbar } = props;
 
-    const [open, setOpen] = React.useState(false);
-    const contentRef = useRef();
+    const editor = React.useRef(null);
     const titleRef = useRef();
+    const imageRef = useRef();
+    const [published, setPublished] = React.useState(false);
+    const [content, setContent] = React.useState('');
+    const [open, setOpen] = React.useState(false);
+
+
+    const config = React.useMemo(() => ({
+            readonly: false,
+            placeholder: 'Start typings...',
+        }),
+        []
+    );
 
     const submitSections = async () => {
-        setOpen(false);
+        
 
-        if (!titleRef.current.value || !contentRef.current.value) {
+        if (!titleRef.current.value || !content || !imageRef.current.files[0]) {
+            setTimeout(() => {
+                pushMessageToSnackbar({
+                    isErrorMessage: true,
+                    text: "Please fill all the fields",
+                });
+                }, 1200);
             return;
         }
 
-        const data = {
-            title: titleRef.current.value,
-            content: contentRef.current.value,
-        };
+ 
 
+        const formData = new FormData();
 
-        const response = await dispatch(createPostAction(data)).unwrap();
-        if (response.message)
-            {
+        formData.append('title', titleRef.current.value);
+        formData.append('content', content);
+        formData.append('image', imageRef.current.files[0]);
+        formData.append('published', published ? 1 : 0);
+
+        const response = await dispatch(createPostAction(formData)).unwrap();
+        if (response.message) {
             setTimeout(() => {
-                    pushMessageToSnackbar({
-                    isErrorMessage: false,
-                    text: "Post Created successfully",
-                    });
-                }, 1200);
-            }
+            pushMessageToSnackbar({
+                isErrorMessage: false,
+                text: "Post Created successfully",
+            });
+            }, 1200);
+        
+            setOpen(false);
+        }
     };
 
     const handleClickOpen = () => {
@@ -92,6 +121,15 @@ return (
             </IconButton>
             <DialogContent dividers>
             <form>
+                <div className="form-group mt-3">
+                    <label htmlFor="image">Image:</label>
+                    <input
+                        ref={imageRef}
+                        type="file"
+                        id="image"
+                        className="form-control"
+                    />
+                </div>
                     <div className="form-group mt-3">
                         <label htmlFor="name">Title:</label>
                         <input
@@ -103,13 +141,18 @@ return (
                     </div>
                     <div className="form-group mt-3">
                         <label htmlFor="content">Content:</label>
-                        <textarea
-                            ref={contentRef}
-                            id="content"
-                            className="form-control"
+                        <JoditEditor
+                            ref={editor}
+                            value={content}
+                            config={config}
+                            tabIndex={1}
+                            onBlur={newContent => setContent(newContent)}
+                            onChange={newContent => {}}
                         />
                     </div>
-                    
+                    <div class="mt-3">
+                    <FormControlLabel control={<Switch onChange={() => setPublished(!published)} checked={published} />} label="Published" />
+                    </div>
                 </form>
                 </DialogContent>
             <DialogActions>

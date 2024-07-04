@@ -217,7 +217,7 @@ function NavBar(props) {
         ),
         mobile: <PictureAsPdfIcon className="text-white" />,
       },
-      show: store.getState().auth?.roles?.includes("admin")
+      show: store.getState().auth?.roles?.includes("admin") || store.getState().auth?.roles?.includes("user")
     },
     {
       link: "/c/users",
@@ -256,7 +256,7 @@ function NavBar(props) {
         ),
         mobile: <AccountCircleIcon className="text-white" />,
       },
-      show: store.getState().auth?.roles?.includes("admin")
+      show: store.getState().auth?.roles?.includes("admin") || store.getState().auth?.roles?.includes("user")
     }
   ];
   return (

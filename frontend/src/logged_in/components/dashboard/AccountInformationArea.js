@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import withStyles from '@mui/styles/withStyles';
 import LoopIcon from "@mui/icons-material/Loop";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 const styles = theme => ({
   paper: {
@@ -19,9 +20,6 @@ const styles = theme => ({
     borderBottomRightRadius: 0
   },
   toolbar: { justifyContent: "space-between" },
-  scaleMinus: {
-    transform: "scaleX(-1)"
-  },
   "@keyframes spin": {
     from: { transform: "rotate(359deg)" },
     to: { transform: "rotate(0deg)" }
@@ -39,30 +37,19 @@ function AccountInformationArea(props) {
           <Box mr={2}>
             <ListItemText
               primary="Status"
-              secondary={isAccountActivated ? "Activated" : "Not activated"}
+              secondary={!isAccountActivated ? "Activated" : "Not activated"}
               className="mr-2"
             />
           </Box>
           <ListItemIcon>
-            <LoopIcon
+            <CheckCircleIcon
               className={classNames(
                 isAccountActivated ? classes.spin : null,
-                classes.scaleMinus
               )}
             />
           </ListItemIcon>
         </Box>
         <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
-          <Switch
-            color="secondary"
-            checked={isAccountActivated}
-            onClick={toggleAccountActivation}
-            inputProps={{
-              "aria-label": isAccountActivated
-                ? "Deactivate Account"
-                : "Activate Account"
-            }}
-          />
         </ListItemSecondaryAction>
       </Toolbar>
     </Paper>

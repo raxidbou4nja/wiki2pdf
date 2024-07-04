@@ -19,31 +19,36 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   }
 
 
-  // switch (pathname) {
-  //   case "/c/posts":
-  //     if (!isAuthenticated || !hasRole("admin")) {
-  //       return <Redirect to="/" />;
-  //     }
-  //     break;
-  //   case "/c/subscription":
-  //     if (!isAuthenticated || !hasRole("user")) {
-  //       return <Redirect to="/" />;
-  //     }
-  //     break;
-  //   case "/c/dashboard":
-  //     if (!isAuthenticated || !hasRole("admin")) {
-  //       return <Redirect to="/" />;
-  //     }
-  //     break;
-  //   case "/c/pdfos":
-  //       if (!isAuthenticated || !hasRole("admin")) {
-  //         return <Redirect to="/" />;
-  //       }
-  //       break;
-  //   default:
-  //       return <Redirect to="/" />;
-  //     break;
-  // }
+  switch (pathname) {
+    case "/c/posts":
+      if (!isAuthenticated || !hasRole("admin")) {
+        return <Redirect to="/" />;
+      }
+      break;
+    case "/c/subscription":
+      if (!isAuthenticated || !hasRole("user")) {
+        return <Redirect to="/" />;
+      }
+      break;
+    case "/c/dashboard":
+      if (!isAuthenticated || !hasRole("admin")) {
+        return <Redirect to="/" />;
+      }
+      break;
+    case "/c/pdf":
+        if (!isAuthenticated || (!hasRole("admin") && !hasRole("user"))) {
+          return <Redirect to="/" />;
+        }
+        break;
+    case "/c/my-profile":
+        if (!isAuthenticated || (!hasRole("admin") && !hasRole("user"))) {
+          return <Redirect to="/" />;
+        }
+        break;
+    default:
+        return <Redirect to="/" />;
+      break;
+  }
   
   return (
     <Route

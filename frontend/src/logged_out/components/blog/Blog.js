@@ -5,6 +5,8 @@ import { Grid, Box } from "@mui/material";
 import withStyles from "@mui/styles/withStyles";
 import BlogCard from "./BlogCard";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useDispatch, useSelector  } from "react-redux";
+import { fetchBlogPostsAction } from "../../../redux/slices/postSlice";
 
 const styles = (theme) => ({
   blogContentWrapper: {

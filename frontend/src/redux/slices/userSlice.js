@@ -28,6 +28,7 @@ const initialState = {
     users: [],
     total: 0,
     user: {},
+    loadingUsers: true,
 };
 
 const userSlice = createSlice({
@@ -38,6 +39,7 @@ const userSlice = createSlice({
         builder.addCase(fetchUsersAction.fulfilled, (state, action) => {
             state.users = action.payload.users;
             state.total = action.payload.total;
+            state.loadingUsers = false;
         });
         builder.addCase(fetchUsersAction.rejected, (state, action) => {
             state.users = [];

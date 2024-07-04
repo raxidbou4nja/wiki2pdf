@@ -48,13 +48,14 @@ function PricingSection(props) {
   return (
     <div className="lg-p-top" style={{ backgroundColor: "#FFFFFF" }}>
       <Typography variant="h3" align="center" className="lg-mg-bottom">
-        Pricing
+        Access Levels
       </Typography>
       <div className={classNames("container-fluid", classes.containerFix)}>
         <Grid
           container
           spacing={calculateSpacing(width, theme)}
           className={classes.gridContainer}
+          justifyContent="center" // Add this line to center align the grid items horizontally
         >
           <Grid
             item
@@ -65,14 +66,16 @@ function PricingSection(props) {
             data-aos="zoom-in-up"
           >
             <PriceCard
-              title="Starter"
+              title="Unregistered User"
               pricing={
-                <span>
-                  $14.99
-                  <Typography display="inline"> / month</Typography>
-                </span>
+                <span></span>
               }
-              features={["Feature 1", "Feature 2", "Feature 3"]}
+              features={[
+                'Generate Pdfs',
+                'Unlimited Downloads',
+                'Unlimited Previews',
+                'Standard Quality',
+              ]}
             />
           </Grid>
           <Grid
@@ -86,54 +89,19 @@ function PricingSection(props) {
           >
             <PriceCard
               highlighted
-              title="Premium"
+              title="Registered User"
               pricing={
-                <span>
-                  $29.99
-                  <Typography display="inline"> / month</Typography>
-                </span>
+                <span></span>
               }
-              features={["Feature 1", "Feature 2", "Feature 3"]}
-            />
-          </Grid>
-          <Grid
-            item
-            className={classes.cardWrapper}
-            xs={12}
-            sm={6}
-            lg={3}
-            data-aos="zoom-in-up"
-            data-aos-delay={isWidthUpMd ? "400" : "0"}
-          >
-            <PriceCard
-              title="Business"
-              pricing={
-                <span>
-                  $49.99
-                  <Typography display="inline"> / month</Typography>
-                </span>
-              }
-              features={["Feature 1", "Feature 2", "Feature 3"]}
-            />
-          </Grid>
-          <Grid
-            item
-            className={classes.cardWrapper}
-            xs={12}
-            sm={6}
-            lg={3}
-            data-aos="zoom-in-up"
-            data-aos-delay={isWidthUpMd ? "600" : "200"}
-          >
-            <PriceCard
-              title="Tycoon"
-              pricing={
-                <span>
-                  $99.99
-                  <Typography display="inline"> / month</Typography>
-                </span>
-              }
-              features={["Feature 1", "Feature 2", "Feature 3"]}
+              features={[
+                'Generate Pdfs',
+                'Unlimited Downloads',
+                'Unlimited Previews',
+                'High Quality',
+                'Download Previous Pdfs',
+                'Preview Previous Pdfs',
+                'Fast Support',
+              ]}
             />
           </Grid>
         </Grid>

@@ -18,6 +18,8 @@ class PostResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content ?? null,
+            'published' => $this->published,
+            'image' => public_path('images/'.$this->image) ?? null,
             'created_at' => \Carbon\Carbon::parse($this->created_at)->format('Y-m-d H:i:s'),
         ];
     }

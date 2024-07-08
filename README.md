@@ -1,6 +1,6 @@
-# Project Name
+# Wiki2PDF
 
-A brief description of your project.
+A Tool to convert wikipedia pages to stylish pdf with customizable content
 
 ## Table of Contents
 
